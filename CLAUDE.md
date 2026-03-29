@@ -57,7 +57,7 @@ VEN exists because the VA system is opaque, intimidating, and actively hostile t
 | Build System | EAS Build (Expo Application Services) |
 | Expo Account | tonyapp2026 |
 | Project Name | ven-app-new |
-| Local Path (Mac) | ~/Downloads/ven-app-new |
+| Local Path (Mac) | ~/Desktop/VEN/ven-app-new |
 | Language | JavaScript / JSX |
 | Package Manager | npm |
 | Android Package | com.venapp.app |

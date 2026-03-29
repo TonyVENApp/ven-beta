@@ -10,7 +10,10 @@ export default function App() {
     return (
       <>
         <StatusBar style="light" />
-        <WalkthroughEngine onBack={() => setScreen('dashboard')} />
+        <WalkthroughEngine
+          onBack={() => setScreen('dashboard')}
+          onComplete={() => setScreen('dashboard')}
+        />
       </>
     );
   }

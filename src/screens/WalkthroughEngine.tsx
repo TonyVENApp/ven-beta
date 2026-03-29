@@ -605,7 +605,7 @@ export const WalkthroughEngine: React.FC<WalkthroughProps> = ({ onBack, onComple
             </View>
           ))}
         </View>
-        <TouchableOpacity style={walkthroughStyles.submitButton} onPress={onComplete}>
+        <TouchableOpacity style={walkthroughStyles.submitButton} onPress={() => { onBack?.(); onComplete?.(); }}>
           <Text style={walkthroughStyles.submitButtonText}>View Dashboard →</Text>
         </TouchableOpacity>
       </View>

@@ -9,6 +9,7 @@ import {
   Dimensions,
   StatusBar,
   Platform,
+  Linking,
 } from 'react-native';
 import { Colors, Spacing, Radius, Shadow, Font } from '../theme';
 
@@ -412,6 +413,18 @@ export const VeteranDashboard: React.FC<DashboardProps> = ({
           </View>
           <TouchableOpacity style={styles.cosponsorManage}>
             <Text style={styles.cosponsorManageText}>Manage</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* ── Beta Feedback ── */}
+        <View style={styles.feedbackSection}>
+          <TouchableOpacity
+            style={styles.feedbackButton}
+            activeOpacity={0.85}
+            onPress={() => Linking.openURL('https://docs.google.com/forms/d/e/1FAIpQLScl-kqwt6GNE2ldmKzl4TXyiKKIWfi1E08I4qqNtXmpc5-0bg/viewform?usp=dialog')}
+          >
+            <Text style={styles.feedbackButtonText}>📝 Give Beta Feedback</Text>
+            <Text style={styles.feedbackButtonSub}>Help us build a better app for veterans</Text>
           </TouchableOpacity>
         </View>
 
@@ -912,6 +925,31 @@ const styles = StyleSheet.create({
   cosponsorManageText: {
     color: Colors.gray300,
     fontSize: 12,
+    fontWeight: '600',
+  },
+
+  // Beta Feedback
+  feedbackSection: {
+    marginHorizontal: Spacing.md,
+    marginTop: Spacing.md,
+  },
+  feedbackButton: {
+    backgroundColor: Colors.gold,
+    borderRadius: Radius.md,
+    paddingVertical: Spacing.md,
+    paddingHorizontal: Spacing.lg,
+    alignItems: 'center',
+  },
+  feedbackButtonText: {
+    color: Colors.navy,
+    fontSize: 16,
+    fontWeight: '800',
+    fontFamily: Font.display,
+  },
+  feedbackButtonSub: {
+    color: Colors.navyMid,
+    fontSize: 12,
+    marginTop: 4,
     fontWeight: '600',
   },
 });

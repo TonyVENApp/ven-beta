@@ -421,7 +421,7 @@ export const VeteranDashboard: React.FC<DashboardProps> = ({
           <TouchableOpacity
             style={styles.feedbackButton}
             activeOpacity={0.85}
-            onPress={() => Linking.openURL('https://docs.google.com/forms/d/e/1FAIpQLScl-kqwt6GNE2ldmKzl4TXyiKKIWfi1E08I4qqNtXmpc5-0bg/viewform?usp=dialog')}
+            onPress={() => Linking.openURL('https://forms.gle/oCVzwTsmEWDEUUuM8')}
           >
             <Text style={styles.feedbackButtonText}>📝 Give Beta Feedback</Text>
             <Text style={styles.feedbackButtonSub}>Help us build a better app for veterans</Text>

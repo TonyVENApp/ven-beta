@@ -4,9 +4,10 @@ import { VeteranDashboard } from './src/screens/VeteranDashboard';
 import { WalkthroughEngine } from './src/screens/WalkthroughEngine';
 import { DocumentVault } from './src/screens/DocumentVault';
 import { CPExamPrep } from './src/screens/CPExamPrep';
+import { NexusNavigator } from './src/screens/NexusNavigator';
 
 export default function App() {
-  const [screen, setScreen] = useState<'dashboard' | 'walkthrough' | 'vault' | 'cpprep'>('dashboard');
+  const [screen, setScreen] = useState<'dashboard' | 'walkthrough' | 'vault' | 'cpprep' | 'nexus'>('dashboard');
 
   if (screen === 'walkthrough') {
     return (
@@ -38,6 +39,15 @@ export default function App() {
     );
   }
 
+  if (screen === 'nexus') {
+    return (
+      <>
+        <StatusBar style="light" />
+        <NexusNavigator onBack={() => setScreen('dashboard')} />
+      </>
+    );
+  }
+
   return (
     <>
       <StatusBar style="light" />
@@ -45,6 +55,7 @@ export default function App() {
         onOpenWalkthrough={() => setScreen('walkthrough')}
         onOpenVault={() => setScreen('vault')}
         onOpenCPPrep={() => setScreen('cpprep')}
+        onOpenNexus={() => setScreen('nexus')}
       />
     </>
   );

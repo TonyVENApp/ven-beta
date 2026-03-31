@@ -46,6 +46,7 @@ interface DashboardProps {
   onOpenVault?: () => void;
   onOpenWalkthrough?: () => void;
   onOpenCPPrep?: () => void;
+  onOpenNexus?: () => void;
 }
 
 // ─── Mock Data ────────────────────────────────────────────────────────────────
@@ -258,6 +259,7 @@ export const VeteranDashboard: React.FC<DashboardProps> = ({
   onOpenVault,
   onOpenWalkthrough,
   onOpenCPPrep,
+  onOpenNexus,
 }) => {
   const [activeTab, setActiveTab] = useState<'claims' | 'benefits'>('claims');
   const scrollY = useRef(new Animated.Value(0)).current;
@@ -333,7 +335,7 @@ export const VeteranDashboard: React.FC<DashboardProps> = ({
             />
             <QuickActionButton icon="🗄️" label="Document Vault" sublabel="23 files" onPress={onOpenVault} />
             <QuickActionButton icon="📋" label="C&P Prep" sublabel="Exam in 14 days" onPress={onOpenCPPrep} />
-            <QuickActionButton icon="🔗" label="Nexus Navigator" sublabel="2 conditions" />
+            <QuickActionButton icon="🔗" label="Nexus Navigator" sublabel="2 conditions" onPress={onOpenNexus} />
           </View>
         </View>
 

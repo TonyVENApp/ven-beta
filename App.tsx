@@ -5,9 +5,10 @@ import { WalkthroughEngine } from './src/screens/WalkthroughEngine';
 import { DocumentVault } from './src/screens/DocumentVault';
 import { CPExamPrep } from './src/screens/CPExamPrep';
 import { NexusNavigator } from './src/screens/NexusNavigator';
+import { VARatingCalculator } from './src/screens/VARatingCalculator';
 
 export default function App() {
-  const [screen, setScreen] = useState<'dashboard' | 'walkthrough' | 'vault' | 'cpprep' | 'nexus'>('dashboard');
+  const [screen, setScreen] = useState<'dashboard' | 'walkthrough' | 'vault' | 'cpprep' | 'nexus' | 'calculator'>('dashboard');
 
   if (screen === 'walkthrough') {
     return (
@@ -48,6 +49,15 @@ export default function App() {
     );
   }
 
+  if (screen === 'calculator') {
+    return (
+      <>
+        <StatusBar style="light" />
+        <VARatingCalculator onBack={() => setScreen('dashboard')} />
+      </>
+    );
+  }
+
   return (
     <>
       <StatusBar style="light" />
@@ -56,6 +66,7 @@ export default function App() {
         onOpenVault={() => setScreen('vault')}
         onOpenCPPrep={() => setScreen('cpprep')}
         onOpenNexus={() => setScreen('nexus')}
+        onOpenCalculator={() => setScreen('calculator')}
       />
     </>
   );

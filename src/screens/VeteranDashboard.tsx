@@ -47,6 +47,7 @@ interface DashboardProps {
   onOpenWalkthrough?: () => void;
   onOpenCPPrep?: () => void;
   onOpenNexus?: () => void;
+  onOpenCalculator?: () => void;
 }
 
 // ─── Mock Data ────────────────────────────────────────────────────────────────
@@ -129,7 +130,7 @@ const BranchBadge: React.FC<{ branch: string }> = ({ branch }) => {
   );
 };
 
-const RatingRing: React.FC<{ current: number; potential: number }> = ({ current, potential }) => {
+const RatingRing: React.FC<{ current: number; potential: number; onLearnMore?: () => void }> = ({ current, potential, onLearnMore }) => {
   const animVal = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -164,7 +165,7 @@ const RatingRing: React.FC<{ current: number; potential: number }> = ({ current,
           <View style={[styles.ratingDot, { backgroundColor: Colors.teal }]} />
           <Text style={styles.ratingMetaText}>Potential: <Text style={[styles.ratingMetaBold, { color: Colors.teal }]}>{potential}%</Text></Text>
         </View>
-        <TouchableOpacity style={styles.mathLink}>
+        <TouchableOpacity style={styles.mathLink} onPress={onLearnMore}>
           <Text style={styles.mathLinkText}>How is this calculated? →</Text>
         </TouchableOpacity>
       </View>
@@ -260,6 +261,7 @@ export const VeteranDashboard: React.FC<DashboardProps> = ({
   onOpenWalkthrough,
   onOpenCPPrep,
   onOpenNexus,
+  onOpenCalculator,
 }) => {
   const [activeTab, setActiveTab] = useState<'claims' | 'benefits'>('claims');
   const scrollY = useRef(new Animated.Value(0)).current;
@@ -302,7 +304,7 @@ export const VeteranDashboard: React.FC<DashboardProps> = ({
         {/* ── Hero Card ── */}
         <Animated.View style={[styles.heroCard, { opacity: headerOpacity }]}>
           <View style={styles.heroCardInner}>
-            <RatingRing current={veteran.currentRating} potential={veteran.potentialRating} />
+            <RatingRing current={veteran.currentRating} potential={veteran.potentialRating} onLearnMore={onOpenCalculator} />
           </View>
           <View style={styles.heroMeta}>
             <View style={styles.heroMetaItem}>

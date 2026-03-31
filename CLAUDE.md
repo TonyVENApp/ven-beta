@@ -1,6 +1,6 @@
 # CLAUDE.md — VEN App Project Brain
 # Veteran Education Network | Valore Empire LLC
-# Last Updated: March 2026
+# Last Updated: March 31, 2026
 
 ---
 
@@ -58,14 +58,22 @@ VEN exists because the VA system is opaque, intimidating, and actively hostile t
 | Expo Account | tonyapp2026 |
 | Project Name | ven-app-new |
 | Local Path (Mac) | ~/Desktop/VEN/ven-app-new |
-| Language | JavaScript / JSX |
+| Language | TypeScript / TSX |
 | Package Manager | npm |
 | Android Package | com.venapp.app |
+| Git user.name | Tony |
+| Git user.email | tony@myven.us |
 
 ### EAS Build Profiles (eas.json)
 - `development` — developmentClient: true, distribution: internal
 - `preview` — distribution: internal (used for beta APK)
 - `production` — default (app store submission)
+
+### Android Development Environment
+- **Emulator:** Pixel 8 API 35 — working ✅
+- **ADB path:** `/Users/papi/Library/Android/sdk/platform-tools/adb`
+- **To start the app:** `cd ~/Desktop/VEN/ven-app-new && npx expo start --android`
+- **To start with cache cleared:** `cd ~/Desktop/VEN/ven-app-new && npx expo start --android --clear`
 
 ### Current Build Status (March 2026)
 - **Android:** First distributable APK completed via EAS Build ✅
@@ -89,15 +97,47 @@ VEN exists because the VA system is opaque, intimidating, and actively hostile t
 
 ---
 
-## APP NAVIGATION FLOW (Intended)
+## APP NAVIGATION FLOW
 
-1. Onboarding → branch of service, basic profile (NO disability % ever asked)
-2. Dashboard → main hub with benefit category tiles
-3. Claim Walkthrough → 21-526EZ step-by-step with plain-English guidance
-4. Education Benefits → GI Bill, VR&E (planned)
-5. Home Loans → VA loan process (planned)
-6. Document Vault → DD214 upload and parsing (planned)
-7. Settings / Profile
+### App.tsx Screen State — 4 screens currently active
+| Screen key | Component | Status |
+|---|---|---|
+| `dashboard` | `VeteranDashboard.tsx` | ✅ Built |
+| `walkthrough` | `WalkthroughEngine.tsx` | ✅ Built |
+| `vault` | `DocumentVault.tsx` | ✅ Built |
+| `cpprep` | `CPExamPrep.tsx` | ✅ Built |
+
+Navigation pattern: `App.tsx` holds a `screen` state string. Each screen is a full-screen component with an `onBack` prop that sets state back to `'dashboard'`. No React Navigation library — intentionally simple.
+
+### Screens Built (as of March 31, 2026)
+
+**VeteranDashboard** (`src/screens/VeteranDashboard.tsx`)
+- Rating ring, active claims list, benefit alerts tab, quick action buttons
+- Wires to: walkthrough, vault, cpprep
+
+**WalkthroughEngine** (`src/screens/WalkthroughEngine.tsx`)
+- 21-526EZ claim walkthrough, step-by-step with plain-English guidance
+
+**DocumentVault** (`src/screens/DocumentVault.tsx`) ✅ Built March 31, 2026
+- Camera capture, file upload, multi-page scan (beta: adds sample doc)
+- Send/share documents to VSO, doctor, lawyer, spouse, or email
+- Trusted Person tab — assign one person full access to your vault
+- Category filter: All / Claims / Medical / Military / Education / Housing
+- All documents stored on device, encrypted — no server upload
+- Add Document modal, Share modal, delete with confirmation
+
+**CPExamPrep** (`src/screens/CPExamPrep.tsx`) ✅ Built March 31, 2026
+- 14-day countdown banner (color shifts orange → red as exam approaches)
+- **Overview tab:** 5 urgent action items, 5-step exam walkthrough, answering rules (including "at least as likely as not" highlighted in gold), 5 common mistakes with fixes
+- **By Condition tab:** PTSD / Back Pain / Tinnitus / Sleep Apnea — each with key points, watch-out warnings, and key phrase to use
+- **Practice tab:** 6 mock Q&A cards — tap to reveal weak answer, strong answer, and why it matters
+
+### Planned Screens (not yet built)
+- Onboarding → branch of service, basic profile (NO disability % ever asked)
+- Education Benefits → GI Bill, VR&E
+- Home Loans → VA loan process
+- Nexus Navigator
+- Settings / Profile
 
 ---
 

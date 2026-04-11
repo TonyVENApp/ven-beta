@@ -322,6 +322,7 @@ export default function App() {
       <StatusBar style="light" />
       <VeteranDashboard
         veteran={veteran}
+        dashboardMode={dashboardMode}
         onOpenProfile={() => setScreen('profile')}
         onOpenWalkthrough={() => setScreen('walkthrough')}
         onOpenVault={() => setScreen('vault')}

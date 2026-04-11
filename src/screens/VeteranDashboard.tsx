@@ -43,6 +43,7 @@ interface DashboardProps {
     potentialRating: number;
     effectiveDate: string;
   };
+  dashboardMode?: 'below_100' | 'one_hundred_scheduler' | 'one_hundred_pt' | 'tdiu_unemployable';
   onStartClaim?: () => void;
   onOpenVault?: () => void;
   onOpenWalkthrough?: () => void;
@@ -157,7 +158,12 @@ const BranchBadge: React.FC<{ branch: string }> = ({ branch }) => {
   );
 };
 
-const RatingRing: React.FC<{ current: number; potential: number; onLearnMore?: () => void }> = ({ current, potential, onLearnMore }) => {
+const RatingRing: React.FC<{
+  current: number;
+  potential: number;
+  onLearnMore?: () => void;
+  hidePotential?: boolean;
+}> = ({ current, potential, onLearnMore, hidePotential }) => {
   const animVal = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -188,10 +194,12 @@ const RatingRing: React.FC<{ current: number; potential: number; onLearnMore?: (
           <View style={[styles.ratingDot, { backgroundColor: Colors.gold }]} />
           <Text style={styles.ratingMetaText}>Current: <Text style={styles.ratingMetaBold}>{current}%</Text></Text>
         </View>
-        <View style={styles.ratingMetaRow}>
-          <View style={[styles.ratingDot, { backgroundColor: Colors.teal }]} />
-          <Text style={styles.ratingMetaText}>Potential: <Text style={[styles.ratingMetaBold, { color: Colors.teal }]}>{potential}%</Text></Text>
-        </View>
+        {!hidePotential && (
+          <View style={styles.ratingMetaRow}>
+            <View style={[styles.ratingDot, { backgroundColor: Colors.teal }]} />
+            <Text style={styles.ratingMetaText}>Potential: <Text style={[styles.ratingMetaBold, { color: Colors.teal }]}>{potential}%</Text></Text>
+          </View>
+        )}
         <TouchableOpacity style={styles.mathLink} onPress={onLearnMore}>
           <Text style={styles.mathLinkText}>How is this calculated? →</Text>
         </TouchableOpacity>
@@ -283,6 +291,7 @@ const QuickActionButton: React.FC<{
 
 export const VeteranDashboard: React.FC<DashboardProps> = ({
   veteran = MOCK_VETERAN,
+  dashboardMode,
   onStartClaim,
   onOpenVault,
   onOpenWalkthrough,
@@ -296,6 +305,7 @@ export const VeteranDashboard: React.FC<DashboardProps> = ({
   const [activeTab, setActiveTab] = useState<'claims' | 'benefits'>('claims');
   const scrollY = useRef(new Animated.Value(0)).current;
   const displayName = getDashboardDisplayName(veteran.name);
+  const isOneHundredPt = dashboardMode === 'one_hundred_pt';
 
   const headerOpacity = scrollY.interpolate({
     inputRange: [0, 80],
@@ -338,23 +348,32 @@ export const VeteranDashboard: React.FC<DashboardProps> = ({
         {/* ── Hero Card ── */}
         <Animated.View style={[styles.heroCard, { opacity: headerOpacity }]}>
           <View style={styles.heroCardInner}>
-            <RatingRing current={veteran.currentRating} potential={veteran.potentialRating} onLearnMore={onOpenCalculator} />
+            <RatingRing
+              current={veteran.currentRating}
+              potential={veteran.potentialRating}
+              onLearnMore={onOpenCalculator}
+              hidePotential={isOneHundredPt}
+            />
           </View>
           <View style={styles.heroMeta}>
             <View style={styles.heroMetaItem}>
               <Text style={styles.heroMetaValue}>{veteran.state}</Text>
               <Text style={styles.heroMetaLabel}>Region</Text>
             </View>
-            <View style={styles.heroMetaDivider} />
-            <View style={styles.heroMetaItem}>
-              <Text style={styles.heroMetaValue}>{veteran.effectiveDate}</Text>
-              <Text style={styles.heroMetaLabel}>Effective Date</Text>
-            </View>
-            <View style={styles.heroMetaDivider} />
-            <View style={styles.heroMetaItem}>
-              <Text style={[styles.heroMetaValue, { color: Colors.teal }]}>+{veteran.potentialRating - veteran.currentRating}%</Text>
-              <Text style={styles.heroMetaLabel}>Potential Gain</Text>
-            </View>
+            {!isOneHundredPt && (
+              <>
+                <View style={styles.heroMetaDivider} />
+                <View style={styles.heroMetaItem}>
+                  <Text style={styles.heroMetaValue}>{veteran.effectiveDate}</Text>
+                  <Text style={styles.heroMetaLabel}>Effective Date</Text>
+                </View>
+                <View style={styles.heroMetaDivider} />
+                <View style={styles.heroMetaItem}>
+                  <Text style={[styles.heroMetaValue, { color: Colors.teal }]}>+{veteran.potentialRating - veteran.currentRating}%</Text>
+                  <Text style={styles.heroMetaLabel}>Potential Gain</Text>
+                </View>
+              </>
+            )}
           </View>
         </Animated.View>
 
@@ -362,16 +381,22 @@ export const VeteranDashboard: React.FC<DashboardProps> = ({
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>QUICK ACTIONS</Text>
           <View style={styles.quickActionsGrid}>
-            <QuickActionButton
-              icon="🗺️"
-              label="File a Claim"
-              sublabel="Start walkthrough"
-              onPress={onOpenWalkthrough}
-              highlight
-            />
+            {!isOneHundredPt && (
+              <QuickActionButton
+                icon="🗺️"
+                label="File a Claim"
+                sublabel="Start walkthrough"
+                onPress={onOpenWalkthrough}
+                highlight
+              />
+            )}
             <QuickActionButton icon="🗄️" label="Document Vault" sublabel="23 files" onPress={onOpenVault} />
-            <QuickActionButton icon="📋" label="C&P Prep" sublabel="Exam in 14 days" onPress={onOpenCPPrep} />
-            <QuickActionButton icon="🔗" label="Nexus Navigator" sublabel="2 conditions" onPress={onOpenNexus} />
+            {!isOneHundredPt && (
+              <QuickActionButton icon="📋" label="C&P Prep" sublabel="Exam in 14 days" onPress={onOpenCPPrep} />
+            )}
+            {!isOneHundredPt && (
+              <QuickActionButton icon="🔗" label="Nexus Navigator" sublabel="2 conditions" onPress={onOpenNexus} />
+            )}
             <QuickActionButton icon="🎓" label="Education Benefits" sublabel="GI Bill + VR&E" onPress={onOpenEducation} />
             <QuickActionButton icon="👨‍👩‍👧" label="Dependents & Family" sublabel="Chapter 35 + CHAMPVA" onPress={onOpenDependents} />
           </View>

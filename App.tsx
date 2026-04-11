@@ -107,14 +107,17 @@ export default function App() {
 
   async function loadProfile(userId: string) {
     setProfileLoading(true);
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from('profiles')
-      .select('full_name, branch, state, rating, va_rating_level, va_is_pt, va_is_tdiu, edu_app_draft_started')
+      .select('full_name, branch, state, va_rating_level, va_is_pt, va_is_tdiu, edu_app_draft_started')
       .eq('id', userId)
       .single();
+    console.log('[loadProfile] userId:', userId);
+    console.log('[loadProfile] data:', data);
+    console.log('[loadProfile] error:', error);
 
     setProfile((data ?? null) as VeteranProfile | null);
-    setSavedDashboardRating(parseSavedRating(data?.rating));
+    setSavedDashboardRating(null);
     setProfileLoading(false);
     return data as VeteranProfile | null;
   }
@@ -209,15 +212,16 @@ export default function App() {
     );
   }
 
+  const dashboardMode = getDashboardMode(profile);
   const veteran = {
     ...DEFAULT_VETERAN,
     name: normalizeName(profile?.full_name) ?? getSessionUserName(session) ?? DEFAULT_VETERAN.name,
     branch: profile?.branch ?? DEFAULT_VETERAN.branch,
     state: profile?.state ?? DEFAULT_VETERAN.state,
     currentRating:
-      getDashboardMode(profile) === 'below_100' && savedDashboardRating !== null
-        ? savedDashboardRating
-        : DEFAULT_VETERAN.currentRating,
+      dashboardMode === 'below_100'
+        ? savedDashboardRating ?? DEFAULT_VETERAN.currentRating
+        : 100,
   };
 
   if (screen === 'walkthrough') {

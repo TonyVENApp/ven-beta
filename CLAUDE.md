@@ -4,6 +4,15 @@
 
 ---
 
+## ACTIVE PROJECT BOUNDARY
+
+- Active app folder: `01 - VEN App/ven-app-new`
+- Legacy app folder: `01 - VEN App/ven-app`
+- Current source of truth for app code and future edits: `ven-app-new`
+- Do not edit `ven-app` unless the task is explicitly about legacy review, comparison, or migration
+
+---
+
 ## WHO I AM
 
 **Tony** — Founder, Veteran Education Network (VEN) and Valore Empire LLC.

@@ -41,7 +41,7 @@ interface Condition {
 }
 
 interface WalkthroughProps {
-  onComplete?: (data: any) => void;
+  onComplete?: () => void;
   onBack?: () => void;
 }
 

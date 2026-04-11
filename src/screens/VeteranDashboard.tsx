@@ -49,6 +49,9 @@ interface DashboardProps {
   onOpenCPPrep?: () => void;
   onOpenNexus?: () => void;
   onOpenCalculator?: () => void;
+  onOpenProfile?: () => void;
+  onOpenDependents?: () => void;
+  onOpenEducation?: () => void;
 }
 
 // ─── Mock Data ────────────────────────────────────────────────────────────────
@@ -263,6 +266,9 @@ export const VeteranDashboard: React.FC<DashboardProps> = ({
   onOpenCPPrep,
   onOpenNexus,
   onOpenCalculator,
+  onOpenProfile,
+  onOpenDependents,
+  onOpenEducation,
 }) => {
   const [activeTab, setActiveTab] = useState<'claims' | 'benefits'>('claims');
   const scrollY = useRef(new Animated.Value(0)).current;
@@ -285,6 +291,9 @@ export const VeteranDashboard: React.FC<DashboardProps> = ({
         </View>
         <View style={styles.topBarRight}>
           <BranchBadge branch={veteran.branch} />
+          <TouchableOpacity style={styles.profileButton} onPress={onOpenProfile} activeOpacity={0.8}>
+            <Text style={styles.profileButtonText}>Profile</Text>
+          </TouchableOpacity>
           <TouchableOpacity style={styles.notifButton}>
             <Text style={{ fontSize: 20 }}>🔔</Text>
             <View style={styles.notifDot} />
@@ -339,6 +348,8 @@ export const VeteranDashboard: React.FC<DashboardProps> = ({
             <QuickActionButton icon="🗄️" label="Document Vault" sublabel="23 files" onPress={onOpenVault} />
             <QuickActionButton icon="📋" label="C&P Prep" sublabel="Exam in 14 days" onPress={onOpenCPPrep} />
             <QuickActionButton icon="🔗" label="Nexus Navigator" sublabel="2 conditions" onPress={onOpenNexus} />
+            <QuickActionButton icon="🎓" label="Education Benefits" sublabel="GI Bill + VR&E" onPress={onOpenEducation} />
+            <QuickActionButton icon="👨‍👩‍👧" label="Dependents & Family" sublabel="Chapter 35 + CHAMPVA" onPress={onOpenDependents} />
           </View>
         </View>
 
@@ -478,6 +489,18 @@ const styles = StyleSheet.create({
     fontSize: 10,
     fontWeight: '800',
     letterSpacing: 1.5,
+  },
+  profileButton: {
+    borderWidth: 1,
+    borderColor: Colors.gold,
+    borderRadius: Radius.sm,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+  },
+  profileButtonText: {
+    color: Colors.gold,
+    fontSize: 12,
+    fontWeight: '800',
   },
   notifButton: {
     position: 'relative',

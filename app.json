@@ -13,7 +13,10 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.venapp.ven"
+      "bundleIdentifier": "com.venapp.ven",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "package": "com.venapp.ven",
@@ -32,6 +35,9 @@
       "eas": {
         "projectId": "2964a174-178a-4eb4-bc09-7ee20fe8de7e"
       }
-    }
+    },
+    "plugins": [
+      "expo-secure-store"
+    ]
   }
 }

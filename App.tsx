@@ -35,7 +35,8 @@ type MainScreen =
   | 'education'
   | 'educationApplication'
   | 'stateBenefits'
-  | 'veteranNews';
+  | 'veteranNews'
+  | 'cosponsor';
 
 type AuthScreen = 'login' | 'signup' | 'forgot';
 type EducationBenefit = 'ch33' | 'ch30' | 'vre';
@@ -253,6 +254,15 @@ export default function App() {
     );
   }
 
+  if (screen === 'cosponsor') {
+    return (
+      <>
+        <StatusBar style="light" />
+        <DocumentVault initialTab="trusted" onBack={() => setScreen('dashboard')} />
+      </>
+    );
+  }
+
   if (screen === 'cpprep') {
     return (
       <>
@@ -359,6 +369,7 @@ export default function App() {
         onOpenEducation={() => setScreen('education')}
         onOpenStateBenefits={() => setScreen('stateBenefits')}
         onOpenVeteranNews={() => setScreen('veteranNews')}
+        onOpenCosponsor={() => setScreen('cosponsor')}
       />
     </>
   );

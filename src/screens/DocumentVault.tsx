@@ -60,6 +60,7 @@ interface TrustedPersonFormValues {
 interface DocumentVaultProps {
   onBack?: () => void;
   onDocumentCountChange?: (count: number) => void;
+  initialTab?: 'files' | 'trusted';
 }
 
 type AddAction = 'camera' | 'upload' | 'scan';
@@ -552,13 +553,13 @@ const ShareModal: React.FC<{ visible: boolean; doc: VaultDocument | null; truste
   );
 };
 
-export const DocumentVault: React.FC<DocumentVaultProps> = ({ onBack, onDocumentCountChange }) => {
+export const DocumentVault: React.FC<DocumentVaultProps> = ({ onBack, onDocumentCountChange, initialTab }) => {
   const [activeCategory, setActiveCategory] = useState<DocCategory>('all');
   const [documents, setDocuments] = useState<VaultDocument[]>([]);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
   const [selectedDoc, setSelectedDoc] = useState<VaultDocument | null>(null);
-  const [activeTab, setActiveTab] = useState<'files' | 'trusted'>('files');
+  const [activeTab, setActiveTab] = useState<'files' | 'trusted'>(initialTab ?? 'files');
   const [uploading, setUploading] = useState(false);
   const [isPicking, setIsPicking] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);

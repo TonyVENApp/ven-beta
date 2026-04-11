@@ -55,6 +55,7 @@ interface DashboardProps {
   onOpenEducation?: () => void;
   onOpenStateBenefits?: () => void;
   onOpenVeteranNews?: () => void;
+  onOpenCosponsor: () => void;
 }
 
 // ─── Mock Data ────────────────────────────────────────────────────────────────
@@ -305,6 +306,7 @@ export const VeteranDashboard: React.FC<DashboardProps> = ({
   onOpenEducation,
   onOpenStateBenefits,
   onOpenVeteranNews,
+  onOpenCosponsor,
 }) => {
   const [activeTab, setActiveTab] = useState<'claims' | 'benefits'>('claims');
   const [ptKeyAreaTab, setPtKeyAreaTab] = useState<'benefits' | 'tools'>('benefits');
@@ -485,9 +487,14 @@ export const VeteranDashboard: React.FC<DashboardProps> = ({
                     <Text style={styles.ptTabRowLabel}>Document Vault</Text>
                     <Text style={styles.ptTabRowArrow}>›</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity style={[styles.ptTabRow, styles.ptTabRowLast]} onPress={onOpenProfile} activeOpacity={0.75}>
+                  <TouchableOpacity style={styles.ptTabRow} onPress={onOpenProfile} activeOpacity={0.75}>
                     <Text style={styles.ptTabRowIcon}>👤</Text>
                     <Text style={styles.ptTabRowLabel}>Profile</Text>
+                    <Text style={styles.ptTabRowArrow}>›</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={[styles.ptTabRow, styles.ptTabRowLast]} onPress={onOpenCosponsor} activeOpacity={0.75}>
+                    <Text style={styles.ptTabRowIcon}>🤝</Text>
+                    <Text style={styles.ptTabRowLabel}>Co-Sponsor</Text>
                     <Text style={styles.ptTabRowArrow}>›</Text>
                   </TouchableOpacity>
                 </View>
@@ -576,16 +583,6 @@ export const VeteranDashboard: React.FC<DashboardProps> = ({
           </>
         )}
 
-        {/* ── Co-Sponsor Row ── */}
-        <View style={styles.cosponsorRow}>
-          <View style={styles.cosponsorInfo}>
-            <Text style={styles.cosponsorLabel}>CO-SPONSOR</Text>
-            <Text style={styles.cosponsorName}>Sarah Webb (Spouse) · View Only</Text>
-          </View>
-          <TouchableOpacity style={styles.cosponsorManage}>
-            <Text style={styles.cosponsorManageText}>Manage</Text>
-          </TouchableOpacity>
-        </View>
 
 <View style={{ height: 40 }} />
       </Animated.ScrollView>

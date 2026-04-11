@@ -429,7 +429,7 @@ export default function UserProfile({ onBack, onSaveComplete }: UserProfileProps
         <View style={profileStyles.card}>
           <SettingRow
             icon="📢"
-            label="VA policy updates"
+            label="Official VA Updates"
             value="Get notified when VA rules change"
             rightElement={
               <Switch

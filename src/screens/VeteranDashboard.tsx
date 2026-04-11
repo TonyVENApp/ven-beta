@@ -345,37 +345,56 @@ export const VeteranDashboard: React.FC<DashboardProps> = ({
         )}
         scrollEventThrottle={16}
       >
-        {/* ── Hero Card ── */}
-        <Animated.View style={[styles.heroCard, { opacity: headerOpacity }]}>
-          <View style={styles.heroCardInner}>
-            <RatingRing
-              current={veteran.currentRating}
-              potential={veteran.potentialRating}
-              onLearnMore={onOpenCalculator}
-              hidePotential={isOneHundredPt}
-            />
-          </View>
-          <View style={styles.heroMeta}>
-            <View style={styles.heroMetaItem}>
-              <Text style={styles.heroMetaValue}>{veteran.state}</Text>
-              <Text style={styles.heroMetaLabel}>Region</Text>
-            </View>
-            {!isOneHundredPt && (
-              <>
-                <View style={styles.heroMetaDivider} />
-                <View style={styles.heroMetaItem}>
-                  <Text style={styles.heroMetaValue}>{veteran.effectiveDate}</Text>
-                  <Text style={styles.heroMetaLabel}>Effective Date</Text>
-                </View>
-                <View style={styles.heroMetaDivider} />
-                <View style={styles.heroMetaItem}>
-                  <Text style={[styles.heroMetaValue, { color: Colors.teal }]}>+{veteran.potentialRating - veteran.currentRating}%</Text>
-                  <Text style={styles.heroMetaLabel}>Potential Gain</Text>
-                </View>
-              </>
-            )}
-          </View>
-        </Animated.View>
+{/* ── Hero Card ── */}
+<Animated.View style={[styles.heroCard, { opacity: headerOpacity }]}> 
+  {isOneHundredPt ? (
+    <View style={styles.ptHeroContent}>
+      <View style={styles.ptHeroTopRow}>
+        <View style={styles.ptHeroRatingBlock}>
+          <Text style={styles.ptHeroRatingValue}>
+            {veteran.currentRating}
+            <Text style={styles.ptHeroRatingPct}>%</Text>
+          </Text>
+          <Text style={styles.ptHeroRatingCaption}>Combined Rating</Text>
+        </View>
+        <View style={styles.ptHeroStatusBadge}>
+          <Text style={styles.ptHeroStatusText}>Permanent &amp; Total</Text>
+        </View>
+      </View>
+      <View style={styles.ptHeroMetaRow}>
+        <Text style={styles.ptHeroMetaLabel}>Region</Text>
+        <Text style={styles.ptHeroMetaValue}>{veteran.state}</Text>
+      </View>
+    </View>
+  ) : (
+    <>
+      <View style={styles.heroCardInner}>
+        <RatingRing
+          current={veteran.currentRating}
+          potential={veteran.potentialRating}
+          onLearnMore={onOpenCalculator}
+          hidePotential={isOneHundredPt}
+        />
+      </View>
+      <View style={styles.heroMeta}>
+        <View style={styles.heroMetaItem}>
+          <Text style={styles.heroMetaValue}>{veteran.state}</Text>
+          <Text style={styles.heroMetaLabel}>Region</Text>
+        </View>
+        <View style={styles.heroMetaDivider} />
+        <View style={styles.heroMetaItem}>
+          <Text style={styles.heroMetaValue}>{veteran.effectiveDate}</Text>
+          <Text style={styles.heroMetaLabel}>Effective Date</Text>
+        </View>
+        <View style={styles.heroMetaDivider} />
+        <View style={styles.heroMetaItem}>
+          <Text style={[styles.heroMetaValue, { color: Colors.teal }]}>+{veteran.potentialRating - veteran.currentRating}%</Text>
+          <Text style={styles.heroMetaLabel}>Potential Gain</Text>
+        </View>
+      </View>
+    </>
+  )}
+</Animated.View>
 
         {/* ── Quick Actions ── */}
         <View style={styles.section}>
@@ -592,6 +611,70 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: Spacing.lg,
   },
+ptHeroContent: {
+  gap: Spacing.lg,
+},
+ptHeroTopRow: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'flex-start',
+  gap: Spacing.md,
+},
+ptHeroRatingBlock: {
+  flex: 1,
+},
+ptHeroRatingValue: {
+  color: Colors.gold,
+  fontSize: 52,
+  fontWeight: '900',
+  fontFamily: Font.display,
+  lineHeight: 56,
+},
+ptHeroRatingPct: {
+  fontSize: 24,
+},
+ptHeroRatingCaption: {
+  color: Colors.gray300,
+  fontSize: 12,
+  fontWeight: '700',
+  letterSpacing: 1,
+  textTransform: 'uppercase',
+  marginTop: 6,
+},
+ptHeroStatusBadge: {
+  borderWidth: 1,
+  borderColor: Colors.gold,
+  borderRadius: Radius.sm,
+  paddingHorizontal: 12,
+  paddingVertical: 8,
+  backgroundColor: 'rgba(201,168,76,0.12)',
+},
+ptHeroStatusText: {
+  color: Colors.white,
+  fontSize: 12,
+  fontWeight: '800',
+  letterSpacing: 0.4,
+},
+ptHeroMetaRow: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  borderTopWidth: 1,
+  borderTopColor: Colors.navyLight,
+  paddingTop: Spacing.md,
+},
+ptHeroMetaValue: {
+  color: Colors.white,
+  fontSize: 15,
+  fontWeight: '700',
+},
+ptHeroMetaLabel: {
+  color: Colors.gray500,
+  fontSize: 11,
+  fontWeight: '700',
+  letterSpacing: 0.5,
+  textTransform: 'uppercase',
+},
   ratingRingContainer: {
     flexDirection: 'row',
     alignItems: 'center',

@@ -436,10 +436,7 @@ export const VeteranDashboard: React.FC<DashboardProps> = ({
               <View style={styles.veteranNewsBannerBadge}>
                 <Text style={styles.veteranNewsBannerBadgeText}>NEW</Text>
               </View>
-              <Text style={styles.veteranNewsBannerTitle}>Veteran News</Text>
-              <Text style={styles.veteranNewsBannerSubtext}>
-                News, updates, and our newsletter for Veterans and families
-              </Text>
+              <Text style={styles.veteranNewsBannerTitle}>News Updates for our Veterans and Families</Text>
               <Text style={styles.veteranNewsBannerAction}>Open →</Text>
             </TouchableOpacity>
             <Text style={styles.sectionTitle}>KEY AREAS</Text>

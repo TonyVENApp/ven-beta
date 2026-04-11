@@ -351,7 +351,7 @@ export const VeteranDashboard: React.FC<DashboardProps> = ({
         scrollEventThrottle={16}
       >
 {/* ── Hero Card ── */}
-<Animated.View style={[styles.heroCard, isOneHundredPt && styles.ptHeroCard, { opacity: headerOpacity }]}> 
+<Animated.View style={[styles.heroCard, isOneHundredPt && styles.ptHeroCard, { opacity: isOneHundredPt ? 1 : headerOpacity }]}> 
   {isOneHundredPt ? (
     <View style={styles.ptHeroContent}>
       <View style={styles.ptHeroAccentRow}>
@@ -442,17 +442,6 @@ export const VeteranDashboard: React.FC<DashboardProps> = ({
 
         {isOneHundredPt ? (
           <View style={styles.section}>
-            <TouchableOpacity
-              style={styles.veteranNewsBanner}
-              onPress={onOpenVeteranNews}
-              activeOpacity={0.9}
-            >
-              <View style={styles.veteranNewsBannerBadge}>
-                <Text style={styles.veteranNewsBannerBadgeText}>NEW</Text>
-              </View>
-              <Text style={styles.veteranNewsBannerTitle}>News Updates for our Veterans and Families</Text>
-              <Text style={styles.veteranNewsBannerAction}>Open →</Text>
-            </TouchableOpacity>
             <View style={styles.ptKeyAreasSection}>
               {/* ── Tab Toggle ── */}
               <View style={styles.tabRow}>
@@ -504,6 +493,17 @@ export const VeteranDashboard: React.FC<DashboardProps> = ({
                 </View>
               )}
             </View>
+            <TouchableOpacity
+              style={styles.veteranNewsBanner}
+              onPress={onOpenVeteranNews}
+              activeOpacity={0.9}
+            >
+              <View style={styles.veteranNewsBannerBadge}>
+                <Text style={styles.veteranNewsBannerBadgeText}>NEW</Text>
+              </View>
+              <Text style={styles.veteranNewsBannerTitle}>News Updates for our Veterans and Families</Text>
+              <Text style={styles.veteranNewsBannerAction}>Open →</Text>
+            </TouchableOpacity>
           </View>
         ) : (
           <>
@@ -587,19 +587,7 @@ export const VeteranDashboard: React.FC<DashboardProps> = ({
           </TouchableOpacity>
         </View>
 
-        {/* ── Beta Feedback ── */}
-        <View style={styles.feedbackSection}>
-          <TouchableOpacity
-            style={styles.feedbackButton}
-            activeOpacity={0.85}
-            onPress={() => Linking.openURL('https://forms.gle/oCVzwTsmEWDEUUuM8')}
-          >
-            <Text style={styles.feedbackButtonText}>📝 Give Beta Feedback</Text>
-            <Text style={styles.feedbackButtonSub}>Help us build a better app for veterans</Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={{ height: 40 }} />
+<View style={{ height: 40 }} />
       </Animated.ScrollView>
     </View>
   );
@@ -1043,6 +1031,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.16,
     shadowRadius: 16,
     elevation: 8,
+    marginBottom: 16,
   },
   ptSectionTitle: {
     color: Colors.goldBright,
@@ -1308,30 +1297,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 
-  // Beta Feedback
-  feedbackSection: {
-    marginHorizontal: Spacing.md,
-    marginTop: Spacing.md,
-  },
-  feedbackButton: {
-    backgroundColor: Colors.gold,
-    borderRadius: Radius.md,
-    paddingVertical: Spacing.md,
-    paddingHorizontal: Spacing.lg,
-    alignItems: 'center',
-  },
-  feedbackButtonText: {
-    color: Colors.navy,
-    fontSize: 16,
-    fontWeight: '800',
-    fontFamily: Font.display,
-  },
-  feedbackButtonSub: {
-    color: Colors.navyMid,
-    fontSize: 12,
-    marginTop: 4,
-    fontWeight: '600',
-  },
 });
 
 export default VeteranDashboard;

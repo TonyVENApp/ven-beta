@@ -48,6 +48,7 @@ type VeteranProfile = {
   va_rating_level?: string | null;
   va_is_pt?: boolean | null;
   va_is_tdiu?: boolean | null;
+  effective_date?: string | null;
 };
 
 const DEFAULT_VETERAN = {
@@ -113,7 +114,7 @@ export default function App() {
     setProfileLoading(true);
     const { data, error } = await supabase
       .from('profiles')
-      .select('full_name, branch, state, va_rating_level, va_is_pt, va_is_tdiu, edu_app_draft_started')
+      .select('full_name, branch, state, va_rating_level, va_is_pt, va_is_tdiu, edu_app_draft_started, effective_date')
       .eq('id', userId)
       .single();
     console.log('[loadProfile] userId:', userId);
@@ -226,6 +227,9 @@ export default function App() {
       dashboardMode === 'below_100'
         ? savedDashboardRating ?? DEFAULT_VETERAN.currentRating
         : 100,
+    effectiveDate: profile?.effective_date
+      ? new Date(profile.effective_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+      : DEFAULT_VETERAN.effectiveDate,
   };
 
   if (screen === 'walkthrough') {

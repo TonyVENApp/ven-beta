@@ -307,6 +307,7 @@ export const VeteranDashboard: React.FC<DashboardProps> = ({
   onOpenVeteranNews,
 }) => {
   const [activeTab, setActiveTab] = useState<'claims' | 'benefits'>('claims');
+  const [ptKeyAreaTab, setPtKeyAreaTab] = useState<'benefits' | 'tools'>('benefits');
   const scrollY = useRef(new Animated.Value(0)).current;
   const displayName = getDashboardDisplayName(veteran.name);
   const isOneHundredPt = dashboardMode === 'one_hundred_pt';
@@ -446,14 +447,55 @@ export const VeteranDashboard: React.FC<DashboardProps> = ({
               <Text style={styles.veteranNewsBannerAction}>Open →</Text>
             </TouchableOpacity>
             <View style={styles.ptKeyAreasSection}>
-              <Text style={[styles.sectionTitle, styles.ptSectionTitle]}>KEY AREAS</Text>
-              <View style={styles.quickActionsGrid}>
-                <QuickActionButton icon="🗄️" label="Document Vault" sublabel="23 files" onPress={onOpenVault} />
-                <QuickActionButton icon="👨‍👩‍👧" label="Dependents & Family" sublabel="Chapter 35 + CHAMPVA" onPress={onOpenDependents} />
-                <QuickActionButton icon="🎓" label="Education Benefits" sublabel="GI Bill + VR&E" onPress={onOpenEducation} />
-                <QuickActionButton icon="🏛️" label="State Benefits" sublabel="What your state offers" onPress={onOpenStateBenefits} />
-                <QuickActionButton icon="👤" label="Profile" sublabel="Manage account" onPress={onOpenProfile} />
+              {/* ── Tab Toggle ── */}
+              <View style={styles.tabRow}>
+                <TouchableOpacity
+                  style={[styles.tab, ptKeyAreaTab === 'benefits' && styles.tabActive]}
+                  onPress={() => setPtKeyAreaTab('benefits')}
+                >
+                  <Text style={[styles.tabText, ptKeyAreaTab === 'benefits' && styles.tabTextActive]}>Benefits</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[styles.tab, ptKeyAreaTab === 'tools' && styles.tabActive]}
+                  onPress={() => setPtKeyAreaTab('tools')}
+                >
+                  <Text style={[styles.tabText, ptKeyAreaTab === 'tools' && styles.tabTextActive]}>Tools</Text>
+                </TouchableOpacity>
               </View>
+              {/* ── Tab Content ── */}
+              {ptKeyAreaTab === 'benefits' && (
+                <View style={styles.ptTabContent}>
+                  <TouchableOpacity style={styles.ptTabRow} onPress={onOpenDependents} activeOpacity={0.75}>
+                    <Text style={styles.ptTabRowIcon}>👨‍👩‍👧</Text>
+                    <Text style={styles.ptTabRowLabel}>Dependents &amp; Family</Text>
+                    <Text style={styles.ptTabRowArrow}>›</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.ptTabRow} onPress={onOpenEducation} activeOpacity={0.75}>
+                    <Text style={styles.ptTabRowIcon}>🎓</Text>
+                    <Text style={styles.ptTabRowLabel}>Education Benefits</Text>
+                    <Text style={styles.ptTabRowArrow}>›</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={[styles.ptTabRow, styles.ptTabRowLast]} onPress={onOpenStateBenefits} activeOpacity={0.75}>
+                    <Text style={styles.ptTabRowIcon}>🏛️</Text>
+                    <Text style={styles.ptTabRowLabel}>State Benefits</Text>
+                    <Text style={styles.ptTabRowArrow}>›</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+              {ptKeyAreaTab === 'tools' && (
+                <View style={styles.ptTabContent}>
+                  <TouchableOpacity style={styles.ptTabRow} onPress={onOpenVault} activeOpacity={0.75}>
+                    <Text style={styles.ptTabRowIcon}>🗄️</Text>
+                    <Text style={styles.ptTabRowLabel}>Document Vault</Text>
+                    <Text style={styles.ptTabRowArrow}>›</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={[styles.ptTabRow, styles.ptTabRowLast]} onPress={onOpenProfile} activeOpacity={0.75}>
+                    <Text style={styles.ptTabRowIcon}>👤</Text>
+                    <Text style={styles.ptTabRowLabel}>Profile</Text>
+                    <Text style={styles.ptTabRowArrow}>›</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
             </View>
           </View>
         ) : (
@@ -998,6 +1040,34 @@ const styles = StyleSheet.create({
   ptSectionTitle: {
     color: Colors.goldBright,
     marginBottom: Spacing.md,
+  },
+  ptTabContent: {
+    marginTop: Spacing.sm,
+  },
+  ptTabRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 13,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(255,255,255,0.07)',
+  },
+  ptTabRowLast: {
+    borderBottomWidth: 0,
+  },
+  ptTabRowIcon: {
+    fontSize: 18,
+    marginRight: 10,
+  },
+  ptTabRowLabel: {
+    flex: 1,
+    color: Colors.white,
+    fontSize: 15,
+    fontWeight: '500',
+  },
+  ptTabRowArrow: {
+    color: Colors.gray500,
+    fontSize: 20,
+    fontWeight: '300',
   },
 
 

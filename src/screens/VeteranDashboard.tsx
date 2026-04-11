@@ -396,83 +396,98 @@ export const VeteranDashboard: React.FC<DashboardProps> = ({
   )}
 </Animated.View>
 
-        {/* ── Quick Actions ── */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>QUICK ACTIONS</Text>
-          <View style={styles.quickActionsGrid}>
-            {!isOneHundredPt && (
-              <QuickActionButton
-                icon="🗺️"
-                label="File a Claim"
-                sublabel="Start walkthrough"
-                onPress={onOpenWalkthrough}
-                highlight
-              />
-            )}
-            <QuickActionButton icon="🗄️" label="Document Vault" sublabel="23 files" onPress={onOpenVault} />
-            {!isOneHundredPt && (
-              <QuickActionButton icon="📋" label="C&P Prep" sublabel="Exam in 14 days" onPress={onOpenCPPrep} />
-            )}
-            {!isOneHundredPt && (
-              <QuickActionButton icon="🔗" label="Nexus Navigator" sublabel="2 conditions" onPress={onOpenNexus} />
-            )}
-            <QuickActionButton icon="🎓" label="Education Benefits" sublabel="GI Bill + VR&E" onPress={onOpenEducation} />
-            <QuickActionButton icon="👨‍👩‍👧" label="Dependents & Family" sublabel="Chapter 35 + CHAMPVA" onPress={onOpenDependents} />
-          </View>
-        </View>
-
-        {/* ── Potential Alert Banner ── */}
-        <TouchableOpacity style={styles.potentialBanner} onPress={onOpenWalkthrough} activeOpacity={0.9}>
-          <View style={styles.potentialBannerLeft}>
-            <Text style={styles.potentialBannerIcon}>⚡</Text>
-            <View>
-              <Text style={styles.potentialBannerTitle}>You may be leaving benefits on the table</Text>
-              <Text style={styles.potentialBannerSub}>2 unrated secondary conditions identified</Text>
+        {!isOneHundredPt && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>QUICK ACTIONS</Text>
+            <View style={styles.quickActionsGrid}>
+              {!isOneHundredPt && (
+                <QuickActionButton
+                  icon="🗺️"
+                  label="File a Claim"
+                  sublabel="Start walkthrough"
+                  onPress={onOpenWalkthrough}
+                  highlight
+                />
+              )}
+              <QuickActionButton icon="🗄️" label="Document Vault" sublabel="23 files" onPress={onOpenVault} />
+              {!isOneHundredPt && (
+                <QuickActionButton icon="📋" label="C&P Prep" sublabel="Exam in 14 days" onPress={onOpenCPPrep} />
+              )}
+              {!isOneHundredPt && (
+                <QuickActionButton icon="🔗" label="Nexus Navigator" sublabel="2 conditions" onPress={onOpenNexus} />
+              )}
+              <QuickActionButton icon="🎓" label="Education Benefits" sublabel="GI Bill + VR&E" onPress={onOpenEducation} />
+              <QuickActionButton icon="👨‍👩‍👧" label="Dependents & Family" sublabel="Chapter 35 + CHAMPVA" onPress={onOpenDependents} />
             </View>
           </View>
-          <Text style={styles.potentialBannerArrow}>→</Text>
-        </TouchableOpacity>
+        )}
 
-        {/* ── Claims / Benefits Tab ── */}
-        <View style={styles.section}>
-          <View style={styles.tabRow}>
-            <TouchableOpacity
-              style={[styles.tab, activeTab === 'claims' && styles.tabActive]}
-              onPress={() => setActiveTab('claims')}
-            >
-              <Text style={[styles.tabText, activeTab === 'claims' && styles.tabTextActive]}>
-                Active Claims ({MOCK_CLAIMS.length})
-              </Text>
+        {isOneHundredPt ? (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>KEY AREAS</Text>
+            <View style={styles.quickActionsGrid}>
+              <QuickActionButton icon="🗄️" label="Document Vault" sublabel="23 files" onPress={onOpenVault} />
+              <QuickActionButton icon="👨‍👩‍👧" label="Dependents & Family" sublabel="Chapter 35 + CHAMPVA" onPress={onOpenDependents} />
+              <QuickActionButton icon="🎓" label="Education Benefits" sublabel="GI Bill + VR&E" onPress={onOpenEducation} />
+              <QuickActionButton icon="👤" label="Profile" sublabel="Manage account" onPress={onOpenProfile} />
+            </View>
+          </View>
+        ) : (
+          <>
+            {/* ── Potential Alert Banner ── */}
+            <TouchableOpacity style={styles.potentialBanner} onPress={onOpenWalkthrough} activeOpacity={0.9}>
+              <View style={styles.potentialBannerLeft}>
+                <Text style={styles.potentialBannerIcon}>⚡</Text>
+                <View>
+                  <Text style={styles.potentialBannerTitle}>You may be leaving benefits on the table</Text>
+                  <Text style={styles.potentialBannerSub}>2 unrated secondary conditions identified</Text>
+                </View>
+              </View>
+              <Text style={styles.potentialBannerArrow}>→</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.tab, activeTab === 'benefits' && styles.tabActive]}
-              onPress={() => setActiveTab('benefits')}
-            >
-              <Text style={[styles.tabText, activeTab === 'benefits' && styles.tabTextActive]}>
-                Benefits ({MOCK_ALERTS.length})
-              </Text>
-            </TouchableOpacity>
-          </View>
 
-          {activeTab === 'claims' && (
-            <View>
-              {MOCK_CLAIMS.map(claim => (
-                <ClaimCard key={claim.id} claim={claim} />
-              ))}
-              <TouchableOpacity style={styles.newClaimButton} onPress={onOpenWalkthrough}>
-                <Text style={styles.newClaimButtonText}>+ Start New Claim Walkthrough</Text>
-              </TouchableOpacity>
-            </View>
-          )}
+            {/* ── Claims / Benefits Tab ── */}
+            <View style={styles.section}>
+              <View style={styles.tabRow}>
+                <TouchableOpacity
+                  style={[styles.tab, activeTab === 'claims' && styles.tabActive]}
+                  onPress={() => setActiveTab('claims')}
+                >
+                  <Text style={[styles.tabText, activeTab === 'claims' && styles.tabTextActive]}>
+                    Active Claims ({MOCK_CLAIMS.length})
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[styles.tab, activeTab === 'benefits' && styles.tabActive]}
+                  onPress={() => setActiveTab('benefits')}
+                >
+                  <Text style={[styles.tabText, activeTab === 'benefits' && styles.tabTextActive]}>
+                    Benefits ({MOCK_ALERTS.length})
+                  </Text>
+                </TouchableOpacity>
+              </View>
 
-          {activeTab === 'benefits' && (
-            <View>
-              {MOCK_ALERTS.map(alert => (
-                <AlertCard key={alert.id} alert={alert} />
-              ))}
+              {activeTab === 'claims' && (
+                <View>
+                  {MOCK_CLAIMS.map(claim => (
+                    <ClaimCard key={claim.id} claim={claim} />
+                  ))}
+                  <TouchableOpacity style={styles.newClaimButton} onPress={onOpenWalkthrough}>
+                    <Text style={styles.newClaimButtonText}>+ Start New Claim Walkthrough</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+
+              {activeTab === 'benefits' && (
+                <View>
+                  {MOCK_ALERTS.map(alert => (
+                    <AlertCard key={alert.id} alert={alert} />
+                  ))}
+                </View>
+              )}
             </View>
-          )}
-        </View>
+          </>
+        )}
 
         {/* ── ITF Banner ── */}
         <View style={styles.itfBanner}>

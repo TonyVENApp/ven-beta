@@ -54,6 +54,7 @@ interface DashboardProps {
   onOpenDependents?: () => void;
   onOpenEducation?: () => void;
   onOpenStateBenefits?: () => void;
+  onOpenVeteranNews?: () => void;
 }
 
 // ─── Mock Data ────────────────────────────────────────────────────────────────
@@ -303,6 +304,7 @@ export const VeteranDashboard: React.FC<DashboardProps> = ({
   onOpenDependents,
   onOpenEducation,
   onOpenStateBenefits,
+  onOpenVeteranNews,
 }) => {
   const [activeTab, setActiveTab] = useState<'claims' | 'benefits'>('claims');
   const scrollY = useRef(new Animated.Value(0)).current;
@@ -426,6 +428,20 @@ export const VeteranDashboard: React.FC<DashboardProps> = ({
 
         {isOneHundredPt ? (
           <View style={styles.section}>
+            <TouchableOpacity
+              style={styles.veteranNewsBanner}
+              onPress={onOpenVeteranNews}
+              activeOpacity={0.9}
+            >
+              <View style={styles.veteranNewsBannerBadge}>
+                <Text style={styles.veteranNewsBannerBadgeText}>NEW</Text>
+              </View>
+              <Text style={styles.veteranNewsBannerTitle}>Veteran News</Text>
+              <Text style={styles.veteranNewsBannerSubtext}>
+                News, updates, and our newsletter for Veterans and families
+              </Text>
+              <Text style={styles.veteranNewsBannerAction}>Open →</Text>
+            </TouchableOpacity>
             <Text style={styles.sectionTitle}>KEY AREAS</Text>
             <View style={styles.quickActionsGrid}>
               <QuickActionButton icon="🗄️" label="Document Vault" sublabel="23 files" onPress={onOpenVault} />
@@ -881,6 +897,47 @@ ptHeroMetaLabel: {
     color: Colors.teal,
     fontSize: 20,
     fontWeight: '700',
+  },
+  veteranNewsBanner: {
+    marginBottom: Spacing.md,
+    borderRadius: Radius.md,
+    padding: Spacing.md,
+    borderWidth: 1,
+    borderColor: Colors.goldBright,
+    backgroundColor: 'rgba(201,168,76,0.16)',
+    ...Shadow.glow,
+  },
+  veteranNewsBannerBadge: {
+    alignSelf: 'flex-start',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: Radius.full,
+    backgroundColor: Colors.teal,
+    marginBottom: Spacing.sm,
+  },
+  veteranNewsBannerBadgeText: {
+    color: Colors.navy,
+    fontSize: 10,
+    fontWeight: '900',
+    letterSpacing: 1,
+  },
+  veteranNewsBannerTitle: {
+    color: Colors.white,
+    fontSize: 20,
+    fontWeight: '800',
+    fontFamily: Font.display,
+  },
+  veteranNewsBannerSubtext: {
+    color: Colors.offWhite,
+    fontSize: 13,
+    lineHeight: 20,
+    marginTop: 6,
+  },
+  veteranNewsBannerAction: {
+    color: Colors.goldBright,
+    fontSize: 13,
+    fontWeight: '800',
+    marginTop: Spacing.sm,
   },
 
   // Tabs

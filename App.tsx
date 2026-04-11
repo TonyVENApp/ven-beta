@@ -17,6 +17,7 @@ import { DependentsFamilyScreen } from './src/screens/DependentsFamilyScreen';
 import { EducationBenefits } from './src/screens/EducationBenefits';
 import { EducationApplicationForm } from './src/screens/EducationApplicationForm';
 import { StateBenefitsScreen } from './src/screens/StateBenefitsScreen';
+import { VeteranNewsScreen } from './src/screens/VeteranNewsScreen';
 import { getDashboardMode } from './src/lib/dashboardMode';
 import { supabase } from './src/lib/supabase';
 import { Colors } from './src/theme';
@@ -33,7 +34,8 @@ type MainScreen =
   | 'dependents'
   | 'education'
   | 'educationApplication'
-  | 'stateBenefits';
+  | 'stateBenefits'
+  | 'veteranNews';
 
 type AuthScreen = 'login' | 'signup' | 'forgot';
 type EducationBenefit = 'ch33' | 'ch30' | 'vre';
@@ -328,6 +330,15 @@ export default function App() {
     );
   }
 
+  if (screen === 'veteranNews') {
+    return (
+      <>
+        <StatusBar style="light" />
+        <VeteranNewsScreen onBack={() => setScreen('dashboard')} />
+      </>
+    );
+  }
+
   return (
     <>
       <StatusBar style="light" />
@@ -343,6 +354,7 @@ export default function App() {
         onOpenDependents={() => setScreen('dependents')}
         onOpenEducation={() => setScreen('education')}
         onOpenStateBenefits={() => setScreen('stateBenefits')}
+        onOpenVeteranNews={() => setScreen('veteranNews')}
       />
     </>
   );

@@ -22,6 +22,7 @@ import { Colors } from './src/theme';
 
 type MainScreen =
   | 'dashboard'
+  | 'onboarding'
   | 'profile'
   | 'walkthrough'
   | 'vault'
@@ -61,6 +62,21 @@ function parseSavedRating(rating?: number | string | null) {
 
   const numericRating = typeof rating === 'number' ? rating : Number(rating);
   return Number.isFinite(numericRating) && numericRating >= 0 && numericRating <= 100 ? numericRating : null;
+}
+
+function normalizeName(name?: string | null) {
+  const trimmedName = name?.trim();
+  return trimmedName ? trimmedName : null;
+}
+
+function getSessionUserName(session: Session | null) {
+  const metadata = session?.user.user_metadata;
+  return (
+    normalizeName(metadata?.full_name) ??
+    normalizeName(metadata?.name) ??
+    normalizeName(metadata?.display_name) ??
+    normalizeName(session?.user.email?.split("@")[0])
+  );
 }
 
 export default function App() {
@@ -163,7 +179,7 @@ export default function App() {
     );
   }
 
-  if (!profile?.full_name) {
+  if (screen === 'onboarding') {
     return (
       <>
         <StatusBar style="light" />
@@ -179,9 +195,9 @@ export default function App() {
 
   const veteran = {
     ...DEFAULT_VETERAN,
-    name: profile.full_name ?? DEFAULT_VETERAN.name,
-    branch: profile.branch ?? DEFAULT_VETERAN.branch,
-    state: profile.state ?? DEFAULT_VETERAN.state,
+    name: normalizeName(profile?.full_name) ?? getSessionUserName(session) ?? DEFAULT_VETERAN.name,
+    branch: profile?.branch ?? DEFAULT_VETERAN.branch,
+    state: profile?.state ?? DEFAULT_VETERAN.state,
     currentRating:
       getDashboardMode(profile) === 'below_100' && savedDashboardRating !== null
         ? savedDashboardRating

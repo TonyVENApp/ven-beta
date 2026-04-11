@@ -272,6 +272,7 @@ export const VeteranDashboard: React.FC<DashboardProps> = ({
 }) => {
   const [activeTab, setActiveTab] = useState<'claims' | 'benefits'>('claims');
   const scrollY = useRef(new Animated.Value(0)).current;
+  const displayName = veteran.name?.trim() || MOCK_VETERAN.name;
 
   const headerOpacity = scrollY.interpolate({
     inputRange: [0, 80],
@@ -285,9 +286,9 @@ export const VeteranDashboard: React.FC<DashboardProps> = ({
 
       {/* ── Fixed Top Bar ── */}
       <View style={styles.topBar}>
-        <View>
+        <View style={styles.topBarIdentity}>
           <Text style={styles.topBarGreeting}>Welcome back,</Text>
-          <Text style={styles.topBarName}>{veteran.name}</Text>
+          <Text style={styles.topBarName} numberOfLines={1}>{displayName}</Text>
         </View>
         <View style={styles.topBarRight}>
           <BranchBadge branch={veteran.branch} />
@@ -463,6 +464,11 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: Colors.navyLight,
   },
+  topBarIdentity: {
+    flex: 1,
+    minWidth: 0,
+    marginRight: Spacing.sm,
+  },
   topBarGreeting: {
     color: Colors.gray300,
     fontSize: 12,
@@ -477,7 +483,8 @@ const styles = StyleSheet.create({
   topBarRight: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
+    flexShrink: 0,
+    gap: 8,
   },
   branchBadge: {
     paddingHorizontal: 10,
@@ -491,6 +498,8 @@ const styles = StyleSheet.create({
     letterSpacing: 1.5,
   },
   profileButton: {
+    minWidth: 64,
+    alignItems: 'center',
     borderWidth: 1,
     borderColor: Colors.gold,
     borderRadius: Radius.sm,

@@ -489,15 +489,19 @@ export const VeteranDashboard: React.FC<DashboardProps> = ({
           </>
         )}
 
-        {/* ── ITF Banner ── */}
-        <View style={styles.itfBanner}>
-          <Text style={styles.itfBannerIcon}>🛡️</Text>
-          <View style={{ flex: 1 }}>
-            <Text style={styles.itfBannerTitle}>Intent to File is ACTIVE</Text>
-            <Text style={styles.itfBannerSub}>Your effective date is protected through May 18, 2025</Text>
-          </View>
-          <View style={styles.itfStatusDot} />
-        </View>
+        {!isOneHundredPt && (
+          <>
+            {/* ── ITF Banner ── */}
+            <View style={styles.itfBanner}>
+              <Text style={styles.itfBannerIcon}>🛡️</Text>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.itfBannerTitle}>Intent to File is ACTIVE</Text>
+                <Text style={styles.itfBannerSub}>Your effective date is protected through May 18, 2025</Text>
+              </View>
+              <View style={styles.itfStatusDot} />
+            </View>
+          </>
+        )}
 
         {/* ── Co-Sponsor Row ── */}
         <View style={styles.cosponsorRow}>

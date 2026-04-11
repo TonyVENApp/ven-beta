@@ -37,23 +37,28 @@ export interface DashboardModeProfile {
 }
 
 export function getDashboardMode(profile?: DashboardModeProfile | null): DashboardMode {
+  let resolvedMode: DashboardMode;
+
   if (profile?.va_is_tdiu === true) {
-    return 'tdiu_unemployable';
+    resolvedMode = 'tdiu_unemployable';
+  } else if (profile?.va_rating_level === 'one_hundred' && profile?.va_is_pt === true) {
+    // A 100% rating level by itself does not mean Permanent & Total.
+    // Only return P&T when the profile includes an explicit P&T signal.
+    resolvedMode = 'one_hundred_pt';
+  } else if (profile?.va_rating_level === 'one_hundred') {
+    // Keep schedular 100% separate from P&T.
+    // If P&T is not explicitly set, a 100% rating level stays schedular.
+    resolvedMode = 'one_hundred_scheduler';
+  } else {
+    resolvedMode = 'below_100';
   }
 
-  // A 100% rating level by itself does not mean Permanent & Total.
-  // Only return P&T when the profile includes an explicit P&T signal.
-  if (profile?.va_rating_level === 'one_hundred' && profile?.va_is_pt === true) {
-    return 'one_hundred_pt';
-  }
+  console.log('[getDashboardMode] va_rating_level:', profile?.va_rating_level);
+  console.log('[getDashboardMode] va_is_pt:', profile?.va_is_pt);
+  console.log('[getDashboardMode] va_is_tdiu:', profile?.va_is_tdiu);
+  console.log('[getDashboardMode] resolved dashboard mode:', resolvedMode);
 
-  // Keep schedular 100% separate from P&T.
-  // If P&T is not explicitly set, a 100% rating level stays schedular.
-  if (profile?.va_rating_level === 'one_hundred') {
-    return 'one_hundred_scheduler';
-  }
-
-  return 'below_100';
+  return resolvedMode;
 }
 
 export function getDashboardModeLabel(mode: DashboardMode): string {

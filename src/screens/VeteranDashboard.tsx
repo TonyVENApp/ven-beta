@@ -350,9 +350,15 @@ export const VeteranDashboard: React.FC<DashboardProps> = ({
         scrollEventThrottle={16}
       >
 {/* ── Hero Card ── */}
-<Animated.View style={[styles.heroCard, { opacity: headerOpacity }]}> 
+<Animated.View style={[styles.heroCard, isOneHundredPt && styles.ptHeroCard, { opacity: headerOpacity }]}> 
   {isOneHundredPt ? (
     <View style={styles.ptHeroContent}>
+      <View style={styles.ptHeroAccentRow}>
+        <View style={styles.ptHeroAccentPill}>
+          <Text style={styles.ptHeroAccentText}>Permanent &amp; Total</Text>
+        </View>
+        <View style={styles.ptHeroAccentDivider} />
+      </View>
       <View style={styles.ptHeroTopRow}>
         <View style={styles.ptHeroRatingBlock}>
           <Text style={styles.ptHeroRatingValue}>
@@ -439,13 +445,15 @@ export const VeteranDashboard: React.FC<DashboardProps> = ({
               <Text style={styles.veteranNewsBannerTitle}>News Updates for our Veterans and Families</Text>
               <Text style={styles.veteranNewsBannerAction}>Open →</Text>
             </TouchableOpacity>
-            <Text style={styles.sectionTitle}>KEY AREAS</Text>
-            <View style={styles.quickActionsGrid}>
-              <QuickActionButton icon="🗄️" label="Document Vault" sublabel="23 files" onPress={onOpenVault} />
-              <QuickActionButton icon="👨‍👩‍👧" label="Dependents & Family" sublabel="Chapter 35 + CHAMPVA" onPress={onOpenDependents} />
-              <QuickActionButton icon="🎓" label="Education Benefits" sublabel="GI Bill + VR&E" onPress={onOpenEducation} />
-              <QuickActionButton icon="🏛️" label="State Benefits" sublabel="What your state offers" onPress={onOpenStateBenefits} />
-              <QuickActionButton icon="👤" label="Profile" sublabel="Manage account" onPress={onOpenProfile} />
+            <View style={styles.ptKeyAreasSection}>
+              <Text style={[styles.sectionTitle, styles.ptSectionTitle]}>KEY AREAS</Text>
+              <View style={styles.quickActionsGrid}>
+                <QuickActionButton icon="🗄️" label="Document Vault" sublabel="23 files" onPress={onOpenVault} />
+                <QuickActionButton icon="👨‍👩‍👧" label="Dependents & Family" sublabel="Chapter 35 + CHAMPVA" onPress={onOpenDependents} />
+                <QuickActionButton icon="🎓" label="Education Benefits" sublabel="GI Bill + VR&E" onPress={onOpenEducation} />
+                <QuickActionButton icon="🏛️" label="State Benefits" sublabel="What your state offers" onPress={onOpenStateBenefits} />
+                <QuickActionButton icon="👤" label="Profile" sublabel="Manage account" onPress={onOpenProfile} />
+              </View>
             </View>
           </View>
         ) : (
@@ -646,70 +654,104 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: Spacing.lg,
   },
-ptHeroContent: {
-  gap: Spacing.lg,
-},
-ptHeroTopRow: {
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  alignItems: 'flex-start',
-  gap: Spacing.md,
-},
-ptHeroRatingBlock: {
-  flex: 1,
-},
-ptHeroRatingValue: {
-  color: Colors.gold,
-  fontSize: 52,
-  fontWeight: '900',
-  fontFamily: Font.display,
-  lineHeight: 56,
-},
-ptHeroRatingPct: {
-  fontSize: 24,
-},
-ptHeroRatingCaption: {
-  color: Colors.gray300,
-  fontSize: 12,
-  fontWeight: '700',
-  letterSpacing: 1,
-  textTransform: 'uppercase',
-  marginTop: 6,
-},
-ptHeroStatusBadge: {
-  borderWidth: 1,
-  borderColor: Colors.gold,
-  borderRadius: Radius.sm,
-  paddingHorizontal: 12,
-  paddingVertical: 8,
-  backgroundColor: 'rgba(201,168,76,0.12)',
-},
-ptHeroStatusText: {
-  color: Colors.white,
-  fontSize: 12,
-  fontWeight: '800',
-  letterSpacing: 0.4,
-},
-ptHeroMetaRow: {
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  borderTopWidth: 1,
-  borderTopColor: Colors.navyLight,
-  paddingTop: Spacing.md,
-},
-ptHeroMetaValue: {
-  color: Colors.white,
-  fontSize: 15,
-  fontWeight: '700',
-},
-ptHeroMetaLabel: {
-  color: Colors.gray500,
-  fontSize: 11,
-  fontWeight: '700',
-  letterSpacing: 0.5,
-  textTransform: 'uppercase',
-},
+  ptHeroCard: {
+    backgroundColor: '#102847',
+    borderColor: 'rgba(240,192,64,0.45)',
+    shadowColor: Colors.goldBright,
+    shadowOpacity: 0.28,
+    shadowRadius: 18,
+    elevation: 12,
+  },
+  ptHeroContent: {
+    gap: Spacing.lg,
+  },
+  ptHeroAccentRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.sm,
+  },
+  ptHeroAccentPill: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: Radius.full,
+    borderWidth: 1,
+    borderColor: 'rgba(26,188,156,0.45)',
+    backgroundColor: 'rgba(26,188,156,0.16)',
+  },
+  ptHeroAccentText: {
+    color: Colors.teal,
+    fontSize: 11,
+    fontWeight: '800',
+    letterSpacing: 0.7,
+    textTransform: 'uppercase',
+  },
+  ptHeroAccentDivider: {
+    flex: 1,
+    height: 1,
+    backgroundColor: 'rgba(240,192,64,0.28)',
+  },
+  ptHeroTopRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    gap: Spacing.md,
+  },
+  ptHeroRatingBlock: {
+    flex: 1,
+  },
+  ptHeroRatingValue: {
+    color: Colors.goldBright,
+    fontSize: 52,
+    fontWeight: '900',
+    fontFamily: Font.display,
+    lineHeight: 56,
+  },
+  ptHeroRatingPct: {
+    fontSize: 24,
+  },
+  ptHeroRatingCaption: {
+    color: Colors.offWhite,
+    fontSize: 12,
+    fontWeight: '700',
+    letterSpacing: 1,
+    textTransform: 'uppercase',
+    marginTop: 6,
+  },
+  ptHeroStatusBadge: {
+    borderWidth: 1,
+    borderColor: 'rgba(240,192,64,0.65)',
+    borderRadius: Radius.sm,
+    paddingHorizontal: 12,
+    paddingVertical: 9,
+    backgroundColor: 'rgba(240,192,64,0.16)',
+  },
+  ptHeroStatusText: {
+    color: Colors.goldBright,
+    fontSize: 12,
+    fontWeight: '800',
+    letterSpacing: 0.6,
+  },
+  ptHeroMetaRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(26,188,156,0.24)',
+    paddingTop: Spacing.md,
+    marginTop: 2,
+  },
+  ptHeroMetaValue: {
+    color: Colors.white,
+    fontSize: 15,
+    fontWeight: '700',
+  },
+  ptHeroMetaLabel: {
+    color: Colors.teal,
+    fontSize: 11,
+    fontWeight: '700',
+    letterSpacing: 0.5,
+    textTransform: 'uppercase',
+  },
   ratingRingContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -898,19 +940,23 @@ ptHeroMetaLabel: {
   veteranNewsBanner: {
     marginBottom: Spacing.md,
     borderRadius: Radius.md,
-    padding: Spacing.md,
+    padding: Spacing.lg,
     borderWidth: 1,
-    borderColor: Colors.goldBright,
-    backgroundColor: 'rgba(201,168,76,0.16)',
-    ...Shadow.glow,
+    borderColor: 'rgba(240,192,64,0.5)',
+    backgroundColor: '#133053',
+    shadowColor: Colors.teal,
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.24,
+    shadowRadius: 18,
+    elevation: 10,
   },
   veteranNewsBannerBadge: {
     alignSelf: 'flex-start',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
     borderRadius: Radius.full,
-    backgroundColor: Colors.teal,
-    marginBottom: Spacing.sm,
+    backgroundColor: Colors.goldBright,
+    marginBottom: Spacing.md,
   },
   veteranNewsBannerBadgeText: {
     color: Colors.navy,
@@ -923,6 +969,7 @@ ptHeroMetaLabel: {
     fontSize: 20,
     fontWeight: '800',
     fontFamily: Font.display,
+    lineHeight: 28,
   },
   veteranNewsBannerSubtext: {
     color: Colors.offWhite,
@@ -931,11 +978,28 @@ ptHeroMetaLabel: {
     marginTop: 6,
   },
   veteranNewsBannerAction: {
-    color: Colors.goldBright,
+    color: Colors.teal,
     fontSize: 13,
     fontWeight: '800',
-    marginTop: Spacing.sm,
+    marginTop: Spacing.md,
   },
+  ptKeyAreasSection: {
+    backgroundColor: '#0F213A',
+    borderRadius: Radius.md,
+    borderWidth: 1,
+    borderColor: 'rgba(26,188,156,0.26)',
+    padding: Spacing.md,
+    shadowColor: Colors.gold,
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.16,
+    shadowRadius: 16,
+    elevation: 8,
+  },
+  ptSectionTitle: {
+    color: Colors.goldBright,
+    marginBottom: Spacing.md,
+  },
+
 
   // Tabs
   tabRow: {

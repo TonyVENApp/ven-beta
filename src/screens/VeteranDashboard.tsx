@@ -53,6 +53,7 @@ interface DashboardProps {
   onOpenProfile?: () => void;
   onOpenDependents?: () => void;
   onOpenEducation?: () => void;
+  onOpenStateBenefits?: () => void;
 }
 
 // ─── Mock Data ────────────────────────────────────────────────────────────────
@@ -301,6 +302,7 @@ export const VeteranDashboard: React.FC<DashboardProps> = ({
   onOpenProfile,
   onOpenDependents,
   onOpenEducation,
+  onOpenStateBenefits,
 }) => {
   const [activeTab, setActiveTab] = useState<'claims' | 'benefits'>('claims');
   const scrollY = useRef(new Animated.Value(0)).current;
@@ -429,6 +431,7 @@ export const VeteranDashboard: React.FC<DashboardProps> = ({
               <QuickActionButton icon="🗄️" label="Document Vault" sublabel="23 files" onPress={onOpenVault} />
               <QuickActionButton icon="👨‍👩‍👧" label="Dependents & Family" sublabel="Chapter 35 + CHAMPVA" onPress={onOpenDependents} />
               <QuickActionButton icon="🎓" label="Education Benefits" sublabel="GI Bill + VR&E" onPress={onOpenEducation} />
+              <QuickActionButton icon="🏛️" label="State Benefits" sublabel="What your state offers" onPress={onOpenStateBenefits} />
               <QuickActionButton icon="👤" label="Profile" sublabel="Manage account" onPress={onOpenProfile} />
             </View>
           </View>

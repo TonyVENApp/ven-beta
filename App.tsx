@@ -16,6 +16,7 @@ import { VARatingCalculator } from './src/screens/VARatingCalculator';
 import { DependentsFamilyScreen } from './src/screens/DependentsFamilyScreen';
 import { EducationBenefits } from './src/screens/EducationBenefits';
 import { EducationApplicationForm } from './src/screens/EducationApplicationForm';
+import { StateBenefitsScreen } from './src/screens/StateBenefitsScreen';
 import { getDashboardMode } from './src/lib/dashboardMode';
 import { supabase } from './src/lib/supabase';
 import { Colors } from './src/theme';
@@ -31,7 +32,8 @@ type MainScreen =
   | 'calculator'
   | 'dependents'
   | 'education'
-  | 'educationApplication';
+  | 'educationApplication'
+  | 'stateBenefits';
 
 type AuthScreen = 'login' | 'signup' | 'forgot';
 type EducationBenefit = 'ch33' | 'ch30' | 'vre';
@@ -317,6 +319,15 @@ export default function App() {
     );
   }
 
+  if (screen === 'stateBenefits') {
+    return (
+      <>
+        <StatusBar style="light" />
+        <StateBenefitsScreen onBack={() => setScreen('dashboard')} />
+      </>
+    );
+  }
+
   return (
     <>
       <StatusBar style="light" />
@@ -331,6 +342,7 @@ export default function App() {
         onOpenCalculator={() => setScreen('calculator')}
         onOpenDependents={() => setScreen('dependents')}
         onOpenEducation={() => setScreen('education')}
+        onOpenStateBenefits={() => setScreen('stateBenefits')}
       />
     </>
   );

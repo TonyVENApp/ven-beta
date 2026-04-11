@@ -360,21 +360,28 @@ export const VeteranDashboard: React.FC<DashboardProps> = ({
         </View>
         <View style={styles.ptHeroAccentDivider} />
       </View>
-      <View style={styles.ptHeroTopRow}>
-        <View style={styles.ptHeroRatingBlock}>
-          <Text style={styles.ptHeroRatingValue}>
-            {veteran.currentRating}
-            <Text style={styles.ptHeroRatingPct}>%</Text>
-          </Text>
-          <Text style={styles.ptHeroRatingCaption}>Combined Rating</Text>
-        </View>
-        <View style={styles.ptHeroStatusBadge}>
-          <Text style={styles.ptHeroStatusText}>Permanent &amp; Total</Text>
-        </View>
+      <View style={{ alignItems: 'center' }}>
+        <Text style={styles.ptHeroRatingValue}>
+          {veteran.currentRating}
+          <Text style={styles.ptHeroRatingPct}>%</Text>
+        </Text>
+        <Text style={styles.ptHeroRatingCaption}>Combined Rating</Text>
       </View>
-      <View style={styles.ptHeroMetaRow}>
-        <Text style={styles.ptHeroMetaLabel}>Region</Text>
-        <Text style={styles.ptHeroMetaValue}>{veteran.state}</Text>
+      <View style={styles.heroMeta}>
+        <View style={styles.heroMetaItem}>
+          <Text style={styles.heroMetaValue}>{veteran.state}</Text>
+          <Text style={styles.heroMetaLabel}>Region</Text>
+        </View>
+        <View style={styles.heroMetaDivider} />
+        <View style={styles.heroMetaItem}>
+          <Text style={styles.heroMetaValue}>{veteran.effectiveDate}</Text>
+          <Text style={styles.heroMetaLabel}>Effective Date</Text>
+        </View>
+        <View style={styles.heroMetaDivider} />
+        <View style={styles.heroMetaItem}>
+          <Text style={[styles.heroMetaValue, { color: Colors.teal }]}>P&amp;T</Text>
+          <Text style={styles.heroMetaLabel}>Status</Text>
+        </View>
       </View>
     </View>
   ) : (

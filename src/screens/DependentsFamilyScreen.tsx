@@ -245,9 +245,114 @@ Veterans Education Network video walkthrough: coming soon`;
   const [openDicGuideSections, setOpenDicGuideSections] = useState<Record<string, boolean>>({
     dic_q1: true,
   });
+  const [openWillSections, setOpenWillSections] = useState<Record<string, boolean>>({});
+  const toggleWillSection = (id: string) => {
+    setOpenWillSections((current) => ({
+      ...current,
+      [id]: !current[id],
+    }));
+  };
   const assessment = useMemo(() => getChapter35Assessment(veteranProfile), [veteranProfile]);
   const statusMeta = STATUS_COPY[assessment.status];
   const champvaAssessment = useMemo(() => getChampvaAssessment(veteranProfile), [veteranProfile]);
+  const willGuideSections: GuideSection[] = [
+    {
+      id: 'will_before_start',
+      title: 'Before You Start',
+      emoji: '📋',
+      helper: 'Review these items before you begin preparing your will.',
+      bullets: [
+        'Check whether you are eligible for the VA online will-preparation benefit',
+        'Gather your 8-digit claim number if you are using the VA path',
+        'Think through who should receive your property',
+        'Decide who should serve as executor or personal representative',
+        'Decide who should care for minor children, if applicable',
+        'Review your beneficiary designations separately — some assets do not pass through a will',
+      ],
+    },
+    {
+      id: 'will_step1',
+      title: 'Check Eligibility',
+      emoji: '✅',
+      helper: 'The VA online will-preparation service is only available to certain beneficiaries.',
+      bullets: [
+        'SGLI beneficiaries',
+        'VGLI beneficiaries',
+        'FSGLI beneficiaries',
+        'Servicemembers who received TSGLI benefits',
+      ],
+      note: 'If you are not in one of these groups, you will need to prepare a will through a private attorney or another service.',
+    },
+    {
+      id: 'will_step2',
+      title: 'Gather What You Need',
+      emoji: '📁',
+      helper: 'The key VA requirement is your 8-digit claim number (SGLI, TSGLI, FSGLI, or VGLI).',
+      bullets: [
+        'Who gets what',
+        'Who will handle the estate (executor)',
+        'Guardians for minor children',
+        'Any special people or charities you want included',
+      ],
+    },
+    {
+      id: 'will_step3',
+      title: 'Use the VA-Linked Online Will-Preparation Service',
+      emoji: '💻',
+      helper: 'Go to FinancialPoint through the VA benefit link in the Forms and Links section below.',
+      bullets: [
+        'Register as a first-time user',
+        'Use Organization Web ID: BFCSVA',
+        'Enter your claim number when prompted',
+        'Select EstateGuidance® to create and print your will',
+      ],
+    },
+    {
+      id: 'will_step4',
+      title: 'Review What Your Will Does and Does Not Cover',
+      emoji: '🔍',
+      helper: 'Some assets pass outside your will.',
+      bullets: [
+        'Life insurance policies go to the named beneficiary, not through your will',
+        'Retirement accounts with named beneficiaries pass outside your will',
+        'Payable-on-death bank accounts pass outside your will',
+        'Some jointly owned property may pass outside your will',
+      ],
+      note: 'Review your beneficiary designations separately.',
+    },
+    {
+      id: 'will_step5',
+      title: 'Sign It Correctly',
+      emoji: '✍️',
+      helper: 'Your will must be signed under the rules of your state.',
+      bullets: [
+        'General rule: sign with at least 2 witnesses',
+      ],
+      note: 'State rules can vary — confirm the requirements where you live.',
+    },
+    {
+      id: 'will_step6',
+      title: 'Store It Where Loved Ones Can Find It',
+      emoji: '🏠',
+      helper: 'Keep your will and other future-planning documents together in one clear location.',
+      bullets: [
+        'Choose a location your family or trusted person can access when needed',
+        'Let your executor or trusted person know where the documents are kept',
+      ],
+    },
+    {
+      id: 'will_step7',
+      title: 'Complete Medical Decision Planning Too',
+      emoji: '🏥',
+      helper: 'VA Form 10-0137 is a separate form from your property-distribution will.',
+      bullets: [
+        'VA Form 10-0137 lets you name a medical decision-maker',
+        'It also records your treatment wishes with VA',
+        'This is for health care decisions, not property distribution',
+      ],
+      note: 'Find the link to VA Form 10-0137 in the Forms and Links section below.',
+    },
+  ];
   const guideSections: GuideSection[] = [
     {
       id: 'before_you_start',
@@ -1000,70 +1105,60 @@ Veterans Education Network video walkthrough: coming soon`;
                     </Text>
                   </View>
 
-                  {/* Before You Start */}
+                  {/* Before You Start + Step-by-Step Guide — expandable pattern */}
                   <View style={styles.card}>
-                    <Text style={styles.sectionTitle}>Before You Start</Text>
-                    {[
-                      'Check whether you are eligible for the VA online will-preparation benefit',
-                      'Gather your 8-digit claim number if you are using the VA path',
-                      'Think through who should receive your property',
-                      'Decide who should serve as executor or personal representative',
-                      'Decide who should care for minor children, if applicable',
-                      'Review your beneficiary designations separately — some assets do not pass through a will',
-                    ].map((item, i) => (
-                      <View key={i} style={{ flexDirection: 'row', marginBottom: 6 }}>
-                        <Text style={[styles.bodyText, { marginRight: 8 }]}>•</Text>
-                        <Text style={[styles.bodyText, { flex: 1 }]}>{item}</Text>
+                    <TouchableOpacity
+                      style={styles.expandHeader}
+                      onPress={() => toggleWillSection('will_guide_open')}
+                      activeOpacity={0.8}
+                    >
+                      <Text style={styles.sectionTitle}>Before You Start & Step-by-Step Guide</Text>
+                      <Text style={styles.expandIcon}>{openWillSections['will_guide_open'] ? '−' : '+'}</Text>
+                    </TouchableOpacity>
+                    {openWillSections['will_guide_open'] && (
+                      <View style={styles.guideWrapper}>
+                        <View style={styles.guideIntroBox}>
+                          <Text style={styles.guideIntroTitle}>Preparing your will</Text>
+                          <Text style={styles.bodyText}>
+                            Work through each section below. Tap any step to expand it.
+                          </Text>
+                        </View>
+                        {willGuideSections.map((section, index) => {
+                          const isOpen = Boolean(openWillSections[section.id]);
+                          return (
+                            <View key={section.id} style={styles.guideSectionCard}>
+                              <TouchableOpacity
+                                style={styles.guideSectionHeader}
+                                onPress={() => toggleWillSection(section.id)}
+                                activeOpacity={0.85}
+                              >
+                                <View style={styles.guideSectionHeaderCopy}>
+                                  <Text style={styles.guideStepLabel}>{index === 0 ? 'Before You Start' : `Step ${index}`}</Text>
+                                  <Text style={styles.guideSectionTitle}>
+                                    {section.emoji} {section.title}
+                                  </Text>
+                                </View>
+                                <Text style={styles.guideSectionIcon}>{isOpen ? '−' : '+'}</Text>
+                              </TouchableOpacity>
+                              {isOpen && (
+                                <View style={styles.guideSectionBody}>
+                                  {section.helper ? <Text style={styles.guideHelper}>{section.helper}</Text> : null}
+                                  {section.bullets?.map((bullet) => (
+                                    <Text key={bullet} style={styles.guideBullet}>• {bullet}</Text>
+                                  ))}
+                                  {section.note ? <Text style={styles.guideNote}>{section.note}</Text> : null}
+                                  {section.warning ? (
+                                    <View style={styles.guideWarningBox}>
+                                      <Text style={styles.guideWarningText}>{section.warning}</Text>
+                                    </View>
+                                  ) : null}
+                                </View>
+                              )}
+                            </View>
+                          );
+                        })}
                       </View>
-                    ))}
-                  </View>
-
-                  {/* Step by Step */}
-                  <View style={styles.card}>
-                    <Text style={styles.sectionTitle}>Step-by-Step Guide</Text>
-
-                    <Text style={[styles.bodyText, { fontWeight: '700', marginTop: 10 }]}>Step 1 — Check Eligibility</Text>
-                    <Text style={styles.bodyText}>
-                      The VA online will-preparation service is only available to SGLI, VGLI, and FSGLI beneficiaries, and Servicemembers who received TSGLI benefits. If you are not in one of these groups, you will need to prepare a will through a private attorney or another service.
-                    </Text>
-
-                    <Text style={[styles.bodyText, { fontWeight: '700', marginTop: 10 }]}>Step 2 — Gather What You Need</Text>
-                    <Text style={styles.bodyText}>
-                      The key VA requirement is your 8-digit claim number (SGLI, TSGLI, FSGLI, or VGLI). Also think through:{'\n'}
-                      • Who gets what{'\n'}
-                      • Who will handle the estate (executor){'\n'}
-                      • Guardians for minor children{'\n'}
-                      • Any special people or charities you want included
-                    </Text>
-
-                    <Text style={[styles.bodyText, { fontWeight: '700', marginTop: 10 }]}>Step 3 — Use the VA-Linked Online Will-Preparation Service</Text>
-                    <Text style={styles.bodyText}>
-                      • Go to FinancialPoint through the VA benefit link below{'\n'}
-                      • Register as a first-time user{'\n'}
-                      • Use Organization Web ID: BFCSVA{'\n'}
-                      • Enter your claim number when prompted{'\n'}
-                      • Select EstateGuidance® to create and print your will
-                    </Text>
-
-                    <Text style={[styles.bodyText, { fontWeight: '700', marginTop: 10 }]}>Step 4 — Review What Your Will Does and Does Not Cover</Text>
-                    <Text style={styles.bodyText}>
-                      Some assets pass outside your will. Life insurance policies, retirement accounts, payable-on-death bank accounts, and some jointly owned property go directly to the named beneficiary — not through your will. Review those designations separately.
-                    </Text>
-
-                    <Text style={[styles.bodyText, { fontWeight: '700', marginTop: 10 }]}>Step 5 — Sign It Correctly</Text>
-                    <Text style={styles.bodyText}>
-                      Your will must be signed under the rules of your state. The general rule is at least two witnesses. State rules can vary, so confirm the requirements where you live.
-                    </Text>
-
-                    <Text style={[styles.bodyText, { fontWeight: '700', marginTop: 10 }]}>Step 6 — Store It Where Loved Ones Can Find It</Text>
-                    <Text style={styles.bodyText}>
-                      Keep your will and other future-planning documents together in one clear location that your family or trusted person can access when needed.
-                    </Text>
-
-                    <Text style={[styles.bodyText, { fontWeight: '700', marginTop: 10 }]}>Step 7 — Complete Medical Decision Planning Too</Text>
-                    <Text style={styles.bodyText}>
-                      VA Form 10-0137 is for health care decisions and a living will — it lets you name a medical decision-maker and record your treatment wishes with VA. This is a separate form from your property-distribution will.
-                    </Text>
+                    )}
                   </View>
 
                   {/* Forms and Links */}

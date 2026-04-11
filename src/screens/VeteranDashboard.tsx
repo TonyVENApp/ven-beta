@@ -117,6 +117,29 @@ const MOCK_ALERTS: BenefitAlert[] = [
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
+function getDashboardDisplayName(name?: string) {
+  const trimmedName = name?.trim();
+
+  if (!trimmedName) {
+    return MOCK_VETERAN.name;
+  }
+
+  const looksLikeEmailPrefixFallback =
+    !trimmedName.includes(' ') && /[._-]/.test(trimmedName);
+
+  if (!looksLikeEmailPrefixFallback) {
+    return trimmedName;
+  }
+
+  const humanizedName = trimmedName
+    .split(/[._-]+/)
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
+    .join(' ');
+
+  return humanizedName || trimmedName;
+}
+
 const BranchBadge: React.FC<{ branch: string }> = ({ branch }) => {
   const branchColors: Record<string, string> = {
     Army: '#4A7C59',
@@ -272,7 +295,7 @@ export const VeteranDashboard: React.FC<DashboardProps> = ({
 }) => {
   const [activeTab, setActiveTab] = useState<'claims' | 'benefits'>('claims');
   const scrollY = useRef(new Animated.Value(0)).current;
-  const displayName = veteran.name?.trim() || MOCK_VETERAN.name;
+  const displayName = getDashboardDisplayName(veteran.name);
 
   const headerOpacity = scrollY.interpolate({
     inputRange: [0, 80],

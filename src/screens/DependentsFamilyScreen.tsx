@@ -1145,12 +1145,16 @@ Veterans Education Network video walkthrough: coming soon`;
                       </TouchableOpacity>
                     </View>
 
-                    {/* Form Workspace — 21P-534EZ */}
+                  </View>
+
+                  {/* Form Workspace — 21P-534EZ */}
+                  <View style={styles.card}>
                     <FormWorkspaceCard
                       draft={form21p534ezDraft}
                       onDraftChange={setForm21p534ezDraft}
                     />
                   </View>
+
                   <View style={[styles.card, styles.dicGuideCard]}>
                     <TouchableOpacity
                       style={styles.expandHeader}

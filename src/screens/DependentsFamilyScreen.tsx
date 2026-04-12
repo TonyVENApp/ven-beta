@@ -255,6 +255,30 @@ Veterans Education Network video walkthrough: coming soon`;
     }));
   };
   const [openBurialSections, setOpenBurialSections] = useState<Record<string, boolean>>({});
+  const [form10_0137Draft, setForm10_0137Draft] = React.useState<FormDraft>(
+    makeDefaultDraft(
+      'va_form_10_0137',
+      'VA Form 10-0137 — Health Care / Living Will',
+      'pdf',
+      'https://www.va.gov/forms/10-0137/',
+      'mail',
+      {},
+      true,
+      true,
+    )
+  );
+
+  React.useEffect(() => {
+    loadDraft('va_form_10_0137').then((saved) => {
+      if (saved) {
+        setForm10_0137Draft((current) => ({
+          ...saved,
+          officialUrl: current.officialUrl,
+        }));
+      }
+    });
+  }, []);
+
   const [form21p530ezDraft, setForm21p530ezDraft] = React.useState<FormDraft>(
     makeDefaultDraft(
       'va_form_21p_530ez',
@@ -1234,6 +1258,13 @@ Veterans Education Network video walkthrough: coming soon`;
                     >
                       <Text style={styles.secondaryButtonText}>VA Form 10-0137 — Health Care / Living Will</Text>
                     </TouchableOpacity>
+
+                    {/* Form Workspace — 10-0137 */}
+                    <FormWorkspaceCard
+                      draft={form10_0137Draft}
+                      onDraftChange={setForm10_0137Draft}
+                    />
+
                     <TouchableOpacity
                       style={[styles.secondaryButton, { marginTop: 10 }]}
                       activeOpacity={0.85}

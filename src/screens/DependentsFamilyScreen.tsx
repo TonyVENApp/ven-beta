@@ -11,6 +11,8 @@ import {
   View,
 } from 'react-native';
 import { Colors, Font, Radius, Spacing } from '../theme';
+import { FormWorkspaceCard } from '../components/FormWorkspaceCard';
+import { FormDraft, loadDraft, makeDefaultDraft } from '../lib/formWorkspace';
 
 interface DependentsFamilyProfile {
   va_rating_level?: string | null;
@@ -253,6 +255,29 @@ Veterans Education Network video walkthrough: coming soon`;
     }));
   };
   const [openBurialSections, setOpenBurialSections] = useState<Record<string, boolean>>({});
+  const [form40_10007Draft, setForm40_10007Draft] = React.useState<FormDraft>(
+    makeDefaultDraft(
+      'va_form_40_10007',
+      'VA Form 40-10007 — Pre-Need Burial Eligibility',
+      'hybrid',
+      'https://www.va.gov/burials-memorials/pre-need-eligibility/',
+      'mail',
+      {},
+      true,
+      true,
+    )
+  );
+
+  React.useEffect(() => {
+    loadDraft('va_form_40_10007').then((saved) => {
+      if (saved) {
+        setForm40_10007Draft((current) => ({
+          ...saved,
+          officialUrl: current.officialUrl,
+        }));
+      }
+    });
+  }, []);
   const toggleBurialSection = (id: string) => {
     setOpenBurialSections((current) => ({
       ...current,
@@ -1340,6 +1365,13 @@ Veterans Education Network video walkthrough: coming soon`;
                         >
                           <Text style={styles.secondaryButtonText}>VA Form 40-10007 — Pre-Need Application</Text>
                         </TouchableOpacity>
+
+                        {/* Form Workspace — 40-10007 */}
+                        <FormWorkspaceCard
+                          draft={form40_10007Draft}
+                          onDraftChange={setForm40_10007Draft}
+                        />
+
                       </View>
                     )}
                   </View>

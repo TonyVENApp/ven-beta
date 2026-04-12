@@ -255,6 +255,30 @@ Veterans Education Network video walkthrough: coming soon`;
     }));
   };
   const [openBurialSections, setOpenBurialSections] = useState<Record<string, boolean>>({});
+  const [form21p530ezDraft, setForm21p530ezDraft] = React.useState<FormDraft>(
+    makeDefaultDraft(
+      'va_form_21p_530ez',
+      'VA Form 21P-530EZ — Burial Benefits Claim',
+      'hybrid',
+      'https://www.va.gov/burials-memorials/veterans-burial-allowance/',
+      'online',
+      {},
+      true,
+      true,
+    )
+  );
+
+  React.useEffect(() => {
+    loadDraft('va_form_21p_530ez').then((saved) => {
+      if (saved) {
+        setForm21p530ezDraft((current) => ({
+          ...saved,
+          officialUrl: current.officialUrl,
+        }));
+      }
+    });
+  }, []);
+
   const [form40_10007Draft, setForm40_10007Draft] = React.useState<FormDraft>(
     makeDefaultDraft(
       'va_form_40_10007',
@@ -1545,6 +1569,13 @@ Veterans Education Network video walkthrough: coming soon`;
                         >
                           <Text style={styles.secondaryButtonText}>VA Form 21P-530EZ — Direct Form Link</Text>
                         </TouchableOpacity>
+
+                        {/* Form Workspace — 21P-530EZ */}
+                        <FormWorkspaceCard
+                          draft={form21p530ezDraft}
+                          onDraftChange={setForm21p530ezDraft}
+                        />
+
                       </View>
                     )}
                   </View>

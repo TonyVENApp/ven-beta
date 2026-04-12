@@ -255,6 +255,30 @@ Veterans Education Network video walkthrough: coming soon`;
     }));
   };
   const [openBurialSections, setOpenBurialSections] = useState<Record<string, boolean>>({});
+  const [form22_5490Draft, setForm22_5490Draft] = React.useState<FormDraft>(
+    makeDefaultDraft(
+      'va_form_22_5490',
+      'VA Form 22-5490 — DEA / Fry Scholarship Application',
+      'online',
+      'https://www.va.gov/family-and-caregiver-benefits/education-and-careers/apply-for-dea-fry-form-22-5490/introduction',
+      'online',
+      {},
+      true,
+      true,
+    )
+  );
+
+  React.useEffect(() => {
+    loadDraft('va_form_22_5490').then((saved) => {
+      if (saved) {
+        setForm22_5490Draft((current) => ({
+          ...saved,
+          officialUrl: current.officialUrl,
+        }));
+      }
+    });
+  }, []);
+
   const [form10_0137Draft, setForm10_0137Draft] = React.useState<FormDraft>(
     makeDefaultDraft(
       'va_form_10_0137',
@@ -820,6 +844,12 @@ Veterans Education Network video walkthrough: coming soon`;
                   <Text style={styles.secondaryButtonText}>Download form</Text>
                 </TouchableOpacity>
               </View>
+
+              {/* Form Workspace — 22-5490 */}
+              <FormWorkspaceCard
+                draft={form22_5490Draft}
+                onDraftChange={setForm22_5490Draft}
+              />
             </View>
 
             <View style={styles.card}>

@@ -1376,7 +1376,7 @@ Veterans Education Network video walkthrough: coming soon`;
                       onPress={() => toggleBurialSection('burial_plan_open')}
                       activeOpacity={0.8}
                     >
-                      <Text style={styles.sectionTitle}>📋 Plan Ahead — Before Death</Text>
+                      <Text style={[styles.sectionTitle, { flex: 1, paddingRight: 8 }]}>📋 Plan Ahead — Before Death</Text>
                       <Text style={styles.expandIcon}>{openBurialSections['burial_plan_open'] ? '−' : '+'}</Text>
                     </TouchableOpacity>
                     {openBurialSections['burial_plan_open'] && (
@@ -1502,7 +1502,7 @@ Veterans Education Network video walkthrough: coming soon`;
                       onPress={() => toggleBurialSection('burial_after_open')}
                       activeOpacity={0.8}
                     >
-                      <Text style={styles.sectionTitle}>📞 After Death — What the Family Does Next</Text>
+                      <Text style={[styles.sectionTitle, { flex: 1, paddingRight: 8 }]}>📞 After Death — What the Family Does Next</Text>
                       <Text style={styles.expandIcon}>{openBurialSections['burial_after_open'] ? '−' : '+'}</Text>
                     </TouchableOpacity>
                     {openBurialSections['burial_after_open'] && (
@@ -1585,7 +1585,7 @@ Veterans Education Network video walkthrough: coming soon`;
                       onPress={() => toggleBurialSection('burial_reimburse_open')}
                       activeOpacity={0.8}
                     >
-                      <Text style={styles.sectionTitle}>💰 Family Reimbursement for Burial Costs</Text>
+                      <Text style={[styles.sectionTitle, { flex: 1, paddingRight: 8 }]}>💰 Family Reimbursement for Burial Costs</Text>
                       <Text style={styles.expandIcon}>{openBurialSections['burial_reimburse_open'] ? '−' : '+'}</Text>
                     </TouchableOpacity>
                     {openBurialSections['burial_reimburse_open'] && (
@@ -1682,7 +1682,7 @@ Veterans Education Network video walkthrough: coming soon`;
                       onPress={() => toggleBurialSection('burial_memorial_open')}
                       activeOpacity={0.8}
                     >
-                      <Text style={styles.sectionTitle}>🎖️ Other VA Memorial Items</Text>
+                      <Text style={[styles.sectionTitle, { flex: 1, paddingRight: 8 }]}>🎖️ Other VA Memorial Items</Text>
                       <Text style={styles.expandIcon}>{openBurialSections['burial_memorial_open'] ? '−' : '+'}</Text>
                     </TouchableOpacity>
                     {openBurialSections['burial_memorial_open'] && (
@@ -1781,7 +1781,7 @@ Veterans Education Network video walkthrough: coming soon`;
                       onPress={() => toggleBurialSection('burial_nca_open')}
                       activeOpacity={0.8}
                     >
-                      <Text style={styles.sectionTitle}>🏛️ National Cemetery Administration (NCA)</Text>
+                      <Text style={[styles.sectionTitle, { flex: 1, paddingRight: 8 }]}>🏛️ National Cemetery Administration (NCA)</Text>
                       <Text style={styles.expandIcon}>{openBurialSections['burial_nca_open'] ? '−' : '+'}</Text>
                     </TouchableOpacity>
                     {openBurialSections['burial_nca_open'] && (

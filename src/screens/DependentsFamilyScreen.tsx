@@ -252,6 +252,13 @@ Veterans Education Network video walkthrough: coming soon`;
       [id]: !current[id],
     }));
   };
+  const [openBurialSections, setOpenBurialSections] = useState<Record<string, boolean>>({});
+  const toggleBurialSection = (id: string) => {
+    setOpenBurialSections((current) => ({
+      ...current,
+      [id]: !current[id],
+    }));
+  };
   const assessment = useMemo(() => getChapter35Assessment(veteranProfile), [veteranProfile]);
   const statusMeta = STATUS_COPY[assessment.status];
   const champvaAssessment = useMemo(() => getChampvaAssessment(veteranProfile), [veteranProfile]);
@@ -1207,8 +1214,408 @@ Veterans Education Network video walkthrough: coming soon`;
               )}
 
               {selectedPrepareFutureTab === 'burial' && (
-                <View style={styles.card}>
-                  <Text style={styles.bodyText}>We will build this section next.</Text>
+                <View>
+
+                  {/* ── SECTION 1: PLAN AHEAD ── */}
+                  <View style={styles.card}>
+                    <Text style={styles.sectionTitle}>🕊️ Burial Preparation</Text>
+                    <Text style={styles.bodyText}>
+                      Planning ahead can reduce stress on the family later. A Veteran can apply for pre-need burial eligibility in a VA national cemetery before death using VA Form 40-10007.{'\n\n'}
+                      If the Veteran has already passed away, skip this planning section and go directly to the After Death and Reimbursement sections below.
+                    </Text>
+                  </View>
+
+                  {/* Plan Ahead — expandable guide */}
+                  <View style={styles.card}>
+                    <TouchableOpacity
+                      style={styles.expandHeader}
+                      onPress={() => toggleBurialSection('burial_plan_open')}
+                      activeOpacity={0.8}
+                    >
+                      <Text style={styles.sectionTitle}>📋 Plan Ahead — Before Death</Text>
+                      <Text style={styles.expandIcon}>{openBurialSections['burial_plan_open'] ? '−' : '+'}</Text>
+                    </TouchableOpacity>
+                    {openBurialSections['burial_plan_open'] && (
+                      <View style={styles.guideWrapper}>
+                        <View style={styles.guideIntroBox}>
+                          <Text style={styles.guideIntroTitle}>What to gather now</Text>
+                          <Text style={styles.bodyText}>
+                            Having these ready makes the process easier for you and your family.
+                          </Text>
+                          {[
+                            'Full legal name',
+                            'Date of birth and Social Security number',
+                            'Military service details and dates',
+                            'DD214 or discharge/separation papers',
+                            'Preferred cemetery if known',
+                            'Spouse or dependent information if relevant',
+                            'Trusted family contact or Co-Sponsor',
+                            'Funeral home preference if known',
+                            'Important end-of-life documents saved in the Document Vault',
+                          ].map((item) => (
+                            <Text key={item} style={styles.guideBullet}>• {item}</Text>
+                          ))}
+                        </View>
+
+                        {[
+                          {
+                            id: 'burial_step1',
+                            emoji: '🏛️',
+                            title: 'Decide on a cemetery type',
+                            helper: 'Choose whether you want burial in a VA national cemetery, a state or tribal Veterans cemetery, or a private cemetery. This affects which forms and processes apply.',
+                          },
+                          {
+                            id: 'burial_step2',
+                            emoji: '📄',
+                            title: 'Gather your discharge documents',
+                            helper: 'Your DD214 or other military discharge or separation papers are the most important documents for burial eligibility. Make sure your family knows where these are stored.',
+                          },
+                          {
+                            id: 'burial_step3',
+                            emoji: '📋',
+                            title: 'Apply for pre-need burial eligibility',
+                            helper: 'Use VA Form 40-10007 to apply before death for a pre-need determination of eligibility for burial in a VA national cemetery. This form is only for use before death. Submitting it early gives the family a clear approval letter to use when the time comes.',
+                          },
+                          {
+                            id: 'burial_step4',
+                            emoji: '🗄️',
+                            title: 'Save your approval letter in the Document Vault',
+                            helper: 'Once you receive a pre-need eligibility decision, save that letter and your supporting records in the Document Vault under Burial Preparation. Your family will need this later.',
+                          },
+                          {
+                            id: 'burial_step5',
+                            emoji: '👤',
+                            title: 'Tell your trusted person where everything is',
+                            helper: 'Make sure your family member, Co-Sponsor, or personal representative knows where your burial records are stored. They will need to find them quickly after death.',
+                          },
+                          {
+                            id: 'burial_step6',
+                            emoji: '🎖️',
+                            title: 'Review optional memorial items',
+                            helper: 'The family may want to request a burial flag, Presidential Memorial Certificate, government headstone or marker, or a medallion for a private cemetery marker. These are separate requests and are listed in the Memorial Items section below.',
+                          },
+                          {
+                            id: 'burial_step7',
+                            emoji: 'ℹ️',
+                            title: 'Understand what happens after death',
+                            helper: 'When death occurs, the family or funeral director arranges burial. After burial, the family may be able to file a reimbursement claim for eligible burial costs using VA Form 21P-530EZ. See the Reimbursement section below.',
+                          },
+                        ].map((section, index) => {
+                          const isOpen = Boolean(openBurialSections[section.id]);
+                          return (
+                            <View key={section.id} style={styles.guideSectionCard}>
+                              <TouchableOpacity
+                                style={styles.guideSectionHeader}
+                                onPress={() => toggleBurialSection(section.id)}
+                                activeOpacity={0.85}
+                              >
+                                <View style={styles.guideSectionHeaderCopy}>
+                                  <Text style={styles.guideStepLabel}>Step {index + 1}</Text>
+                                  <Text style={styles.guideSectionTitle}>
+                                    {section.emoji} {section.title}
+                                  </Text>
+                                </View>
+                                <Text style={styles.guideSectionIcon}>{isOpen ? '−' : '+'}</Text>
+                              </TouchableOpacity>
+                              {isOpen && (
+                                <View style={styles.guideSectionBody}>
+                                  <Text style={styles.guideHelper}>{section.helper}</Text>
+                                </View>
+                              )}
+                            </View>
+                          );
+                        })}
+
+                        <TouchableOpacity
+                          style={[styles.primaryButton, { marginTop: 12 }]}
+                          activeOpacity={0.85}
+                          onPress={() => openExternalSite('https://www.va.gov/burials-memorials/pre-need-eligibility/')}
+                        >
+                          <Text style={styles.primaryButtonText}>VA Pre-Need Eligibility Info</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          style={[styles.secondaryButton, { marginTop: 10 }]}
+                          activeOpacity={0.85}
+                          onPress={() => openExternalSite('https://www.va.gov/forms/40-10007/')}
+                        >
+                          <Text style={styles.secondaryButtonText}>VA Form 40-10007 — Pre-Need Application</Text>
+                        </TouchableOpacity>
+                      </View>
+                    )}
+                  </View>
+
+                  {/* ── SECTION 2: WHEN DEATH HAPPENS ── */}
+                  <View style={styles.card}>
+                    <TouchableOpacity
+                      style={styles.expandHeader}
+                      onPress={() => toggleBurialSection('burial_after_open')}
+                      activeOpacity={0.8}
+                    >
+                      <Text style={styles.sectionTitle}>📞 After Death — What the Family Does Next</Text>
+                      <Text style={styles.expandIcon}>{openBurialSections['burial_after_open'] ? '−' : '+'}</Text>
+                    </TouchableOpacity>
+                    {openBurialSections['burial_after_open'] && (
+                      <View style={styles.guideWrapper}>
+                        <View style={styles.guideIntroBox}>
+                          <Text style={styles.guideIntroTitle}>At time of death</Text>
+                          <Text style={styles.bodyText}>
+                            If there is a pre-need approval letter, the family or funeral director should use it when arranging burial. If there is no approval letter, the family can still move forward with burial scheduling.
+                          </Text>
+                        </View>
+
+                        <View style={styles.guideSectionCard}>
+                          <Text style={[styles.guideStepLabel, { padding: 12 }]}>What the family may need at this stage</Text>
+                          <View style={{ paddingHorizontal: 12, paddingBottom: 12 }}>
+                            {[
+                              'Pre-need approval letter if available',
+                              'DD214 or discharge paperwork',
+                              'Death certificate when available',
+                              'Funeral home contact information',
+                              'Cemetery preference if known',
+                            ].map((item) => (
+                              <Text key={item} style={styles.guideBullet}>• {item}</Text>
+                            ))}
+                          </View>
+                        </View>
+
+                        <View style={styles.guideSectionCard}>
+                          <Text style={[styles.guideStepLabel, { padding: 12 }]}>Scheduling burial in a VA national cemetery</Text>
+                          <View style={{ paddingHorizontal: 12, paddingBottom: 12 }}>
+                            <Text style={styles.guideHelper}>
+                              Contact the National Cemetery Scheduling Office to arrange burial in a VA national cemetery. The funeral director often helps with this process.
+                            </Text>
+                            <Text style={[styles.guideNote, { marginTop: 8 }]}>
+                              📞 National Cemetery Scheduling Office{'\n'}
+                              800-535-1117 (TTY: 711)
+                            </Text>
+                          </View>
+                        </View>
+
+                        <View style={styles.guideSectionCard}>
+                          <Text style={[styles.guideStepLabel, { padding: 12 }]}>Military funeral honors</Text>
+                          <View style={{ paddingHorizontal: 12, paddingBottom: 12 }}>
+                            <Text style={styles.guideHelper}>
+                              Military funeral honors are usually requested through the funeral director or personal representative. The funeral director can help coordinate this.
+                            </Text>
+                          </View>
+                        </View>
+
+                        <View style={styles.guideSectionCard}>
+                          <Text style={[styles.guideStepLabel, { padding: 12 }]}>Spouse or dependent burial eligibility</Text>
+                          <View style={{ paddingHorizontal: 12, paddingBottom: 12 }}>
+                            <Text style={styles.guideHelper}>
+                              In some cases, a Veteran's spouse or dependent may also be eligible for burial in a VA national cemetery. The funeral director or VA can provide guidance for the specific situation.
+                            </Text>
+                          </View>
+                        </View>
+
+                        <TouchableOpacity
+                          style={[styles.primaryButton, { marginTop: 12 }]}
+                          activeOpacity={0.85}
+                          onPress={() => openExternalSite('https://www.va.gov/burials-memorials/schedule-a-burial/')}
+                        >
+                          <Text style={styles.primaryButtonText}>Schedule a VA Burial</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          style={[styles.secondaryButton, { marginTop: 10 }]}
+                          activeOpacity={0.85}
+                          onPress={() => openExternalSite('https://www.cem.va.gov/military_funeral_honors.asp')}
+                        >
+                          <Text style={styles.secondaryButtonText}>Military Funeral Honors Info</Text>
+                        </TouchableOpacity>
+                      </View>
+                    )}
+                  </View>
+
+                  {/* ── SECTION 3: REIMBURSEMENT ── */}
+                  <View style={[styles.card, { borderColor: Colors.gold, borderWidth: 1 }]}>
+                    <TouchableOpacity
+                      style={styles.expandHeader}
+                      onPress={() => toggleBurialSection('burial_reimburse_open')}
+                      activeOpacity={0.8}
+                    >
+                      <Text style={styles.sectionTitle}>💰 Family Reimbursement for Burial Costs</Text>
+                      <Text style={styles.expandIcon}>{openBurialSections['burial_reimburse_open'] ? '−' : '+'}</Text>
+                    </TouchableOpacity>
+                    {openBurialSections['burial_reimburse_open'] && (
+                      <View style={styles.guideWrapper}>
+                        <View style={styles.guideIntroBox}>
+                          <Text style={styles.guideIntroTitle}>VA Form 21P-530EZ — Burial Benefits Claim</Text>
+                          <Text style={styles.bodyText}>
+                            After death, the family may be able to apply for a burial allowance to help with eligible costs. This is not automatic for everyone and is not guaranteed. Eligibility depends on factors like the type of death and who paid the expenses.
+                          </Text>
+                        </View>
+
+                        <View style={styles.guideSectionCard}>
+                          <Text style={[styles.guideStepLabel, { padding: 12 }]}>What this may help cover</Text>
+                          <View style={{ paddingHorizontal: 12, paddingBottom: 12 }}>
+                            {[
+                              'Burial and funeral expenses (depending on eligibility)',
+                              'Plot or interment expenses (depending on eligibility)',
+                              'Transportation of the Veteran\'s remains (depending on eligibility)',
+                            ].map((item) => (
+                              <Text key={item} style={styles.guideBullet}>• {item}</Text>
+                            ))}
+                          </View>
+                        </View>
+
+                        <View style={[styles.guideSectionCard, { borderColor: Colors.gold, borderWidth: 1 }]}>
+                          <View style={{ padding: 12 }}>
+                            <Text style={[styles.guideStepLabel, { color: Colors.gold }]}>⏰ Important time limit</Text>
+                            <Text style={[styles.guideHelper, { marginTop: 6 }]}>
+                              For many non-service-connected burial claims, the family may need to file within 2 years after burial. Do not wait too long to look into this.
+                            </Text>
+                          </View>
+                        </View>
+
+                        <View style={styles.guideSectionCard}>
+                          <Text style={[styles.guideStepLabel, { padding: 12 }]}>Note on automatic payments</Text>
+                          <View style={{ paddingHorizontal: 12, paddingBottom: 12 }}>
+                            <Text style={styles.guideHelper}>
+                              Some eligible surviving spouses already on the Veteran's VA record may receive an automatic payment in some cases. If another family member or another person paid the expenses, they should review the claim path carefully.
+                            </Text>
+                          </View>
+                        </View>
+
+                        <View style={styles.guideSectionCard}>
+                          <Text style={[styles.guideStepLabel, { padding: 12 }]}>What to gather for the reimbursement claim</Text>
+                          <View style={{ paddingHorizontal: 12, paddingBottom: 12 }}>
+                            {[
+                              'Death certificate',
+                              'Itemized funeral or burial receipts',
+                              'Transportation receipts if claiming transportation',
+                              'DD214 or discharge papers',
+                              'Medical records if claiming service-connected death',
+                            ].map((item) => (
+                              <Text key={item} style={styles.guideBullet}>• {item}</Text>
+                            ))}
+                          </View>
+                        </View>
+
+                        <TouchableOpacity
+                          style={[styles.primaryButton, { marginTop: 12 }]}
+                          activeOpacity={0.85}
+                          onPress={() => openExternalSite('https://www.va.gov/burials-memorials/veterans-burial-allowance/')}
+                        >
+                          <Text style={styles.primaryButtonText}>VA Burial Allowance Info</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          style={[styles.secondaryButton, { marginTop: 10 }]}
+                          activeOpacity={0.85}
+                          onPress={() => openExternalSite('https://www.va.gov/burials-memorials/veterans-burial-allowance/apply-for-allowance-form-21p-530ez/')}
+                        >
+                          <Text style={styles.secondaryButtonText}>Apply — VA Form 21P-530EZ</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          style={[styles.secondaryButton, { marginTop: 10 }]}
+                          activeOpacity={0.85}
+                          onPress={() => openExternalSite('https://www.va.gov/forms/21p-530ez/')}
+                        >
+                          <Text style={styles.secondaryButtonText}>VA Form 21P-530EZ — Direct Form Link</Text>
+                        </TouchableOpacity>
+                      </View>
+                    )}
+                  </View>
+
+                  {/* ── SECTION 4: MEMORIAL ITEMS ── */}
+                  <View style={styles.card}>
+                    <TouchableOpacity
+                      style={styles.expandHeader}
+                      onPress={() => toggleBurialSection('burial_memorial_open')}
+                      activeOpacity={0.8}
+                    >
+                      <Text style={styles.sectionTitle}>🎖️ Other VA Memorial Items</Text>
+                      <Text style={styles.expandIcon}>{openBurialSections['burial_memorial_open'] ? '−' : '+'}</Text>
+                    </TouchableOpacity>
+                    {openBurialSections['burial_memorial_open'] && (
+                      <View style={styles.guideWrapper}>
+                        <View style={styles.guideIntroBox}>
+                          <Text style={styles.bodyText}>
+                            These items are separate requests the family may make to honor the Veteran.
+                          </Text>
+                        </View>
+                        {[
+                          {
+                            id: 'memorial_flag',
+                            emoji: '🚩',
+                            title: 'Burial Flag — VA Form 27-2008',
+                            helper: 'A United States flag may be provided to drape the casket or accompany the urn of a Veteran who served honorably. The funeral director usually helps request this.',
+                          },
+                          {
+                            id: 'memorial_pmc',
+                            emoji: '📜',
+                            title: 'Presidential Memorial Certificate — VA Form 40-0247',
+                            helper: 'An engraved paper certificate signed by the President of the United States, expressing the nation\'s gratitude for the Veteran\'s service. Family members and loved ones may request this.',
+                          },
+                          {
+                            id: 'memorial_headstone',
+                            emoji: '🪨',
+                            title: 'Headstone or Marker — VA Form 40-1330',
+                            helper: 'The government may provide a headstone or marker for an eligible Veteran\'s grave. This can be for a burial in a national, state Veterans, or private cemetery.',
+                          },
+                          {
+                            id: 'memorial_medallion',
+                            emoji: '🏅',
+                            title: 'Medallion for Private Cemetery — VA Form 40-1330M',
+                            helper: 'Instead of a full headstone, the family may request a government medallion to affix to a privately purchased headstone or marker at a private cemetery.',
+                          },
+                        ].map((section) => {
+                          const isOpen = Boolean(openBurialSections[section.id]);
+                          return (
+                            <View key={section.id} style={styles.guideSectionCard}>
+                              <TouchableOpacity
+                                style={styles.guideSectionHeader}
+                                onPress={() => toggleBurialSection(section.id)}
+                                activeOpacity={0.85}
+                              >
+                                <View style={styles.guideSectionHeaderCopy}>
+                                  <Text style={styles.guideSectionTitle}>
+                                    {section.emoji} {section.title}
+                                  </Text>
+                                </View>
+                                <Text style={styles.guideSectionIcon}>{isOpen ? '−' : '+'}</Text>
+                              </TouchableOpacity>
+                              {isOpen && (
+                                <View style={styles.guideSectionBody}>
+                                  <Text style={styles.guideHelper}>{section.helper}</Text>
+                                </View>
+                              )}
+                            </View>
+                          );
+                        })}
+                        <TouchableOpacity
+                          style={[styles.primaryButton, { marginTop: 12 }]}
+                          activeOpacity={0.85}
+                          onPress={() => openExternalSite('https://www.cem.va.gov/burial-memorial-benefits/')}
+                        >
+                          <Text style={styles.primaryButtonText}>VA Burial & Memorial Benefits</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          style={[styles.secondaryButton, { marginTop: 10 }]}
+                          activeOpacity={0.85}
+                          onPress={() => openExternalSite('https://www.va.gov/burials-memorials/memorial-items/presidential-memorial-certificates/')}
+                        >
+                          <Text style={styles.secondaryButtonText}>Presidential Memorial Certificate</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          style={[styles.secondaryButton, { marginTop: 10 }]}
+                          activeOpacity={0.85}
+                          onPress={() => openExternalSite('https://www.cem.va.gov/hmm/order_instructions.asp')}
+                        >
+                          <Text style={styles.secondaryButtonText}>Headstone / Marker / Medallion Info</Text>
+                        </TouchableOpacity>
+                      </View>
+                    )}
+                  </View>
+
+                  {/* ── DOCUMENT VAULT LINK ── */}
+                  <View style={styles.card}>
+                    <Text style={styles.sectionTitle}>🗄️ Store Burial Documents in the Vault</Text>
+                    <Text style={styles.bodyText}>
+                      Keep all burial planning records in one place your family can find quickly. The Document Vault has a Burial Preparation section for storing your DD214, pre-need approval letter, cemetery preferences, funeral home information, and all related paperwork.
+                    </Text>
+                  </View>
+
                 </View>
               )}
             </View>

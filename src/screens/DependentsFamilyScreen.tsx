@@ -1616,6 +1616,205 @@ Veterans Education Network video walkthrough: coming soon`;
                     </Text>
                   </View>
 
+                  {/* ── SECTION 5: NCA ── */}
+                  <View style={styles.card}>
+                    <TouchableOpacity
+                      style={styles.expandHeader}
+                      onPress={() => toggleBurialSection('burial_nca_open')}
+                      activeOpacity={0.8}
+                    >
+                      <Text style={styles.sectionTitle}>🏛️ National Cemetery Administration (NCA)</Text>
+                      <Text style={styles.expandIcon}>{openBurialSections['burial_nca_open'] ? '−' : '+'}</Text>
+                    </TouchableOpacity>
+                    {openBurialSections['burial_nca_open'] && (
+                      <View style={styles.guideWrapper}>
+
+                        {/* Intro */}
+                        <View style={styles.guideIntroBox}>
+                          <Text style={styles.bodyText}>
+                            The National Cemetery Administration helps Veterans and eligible family members with burial in VA national cemeteries, memorial benefits, and planning ahead so families have less stress later.{'\n\n'}
+                            This section covers preparation before time of need and explains what the family will need to do when that time comes.{'\n\n'}
+                            Burial eligibility is based on factors like service history, discharge conditions, active duty or reserve or guard status in certain cases, and whether the person is an eligible spouse or dependent — not on a disability rating or percentage.
+                          </Text>
+                          <TouchableOpacity
+                            style={[styles.primaryButton, { marginTop: 12 }]}
+                            activeOpacity={0.85}
+                            onPress={() => openExternalSite('https://www.cem.va.gov/burial-memorial-benefits/')}
+                          >
+                            <Text style={styles.primaryButtonText}>Open NCA Burial & Memorial Benefits</Text>
+                          </TouchableOpacity>
+                        </View>
+
+                        {/* What NCA may provide */}
+                        <View style={styles.guideSectionCard}>
+                          <Text style={[styles.guideStepLabel, { padding: 12 }]}>What NCA may provide</Text>
+                          <View style={{ paddingHorizontal: 12, paddingBottom: 12 }}>
+                            {[
+                              'A gravesite in a VA national cemetery with available space',
+                              'Opening and closing of the grave',
+                              'Perpetual care of the gravesite',
+                              'A government headstone, marker, or medallion',
+                              'A Presidential Memorial Certificate',
+                              'A burial flag',
+                              'Possible burial allowance reimbursement in eligible cases',
+                            ].map((item) => (
+                              <Text key={item} style={styles.guideBullet}>• {item}</Text>
+                            ))}
+                            <Text style={[styles.guideNote, { marginTop: 8 }]}>
+                              Cremated remains are buried or inurned in the same manner and with the same honors as casketed remains. Eligible spouses and dependents may also be buried in a VA national cemetery, including in some cases before the Veteran passes away.
+                            </Text>
+                          </View>
+                        </View>
+
+                        {/* Before You Start */}
+                        <View style={styles.guideSectionCard}>
+                          <Text style={[styles.guideStepLabel, { padding: 12 }]}>Before you start</Text>
+                          <View style={{ paddingHorizontal: 12, paddingBottom: 12 }}>
+                            {[
+                              'Burial can often be planned in advance through a pre-need determination of eligibility — this is specifically for before death. If the person has already died, the family uses the burial scheduling process instead.',
+                              'Gather: full legal name, Social Security number, date of birth, military history, DD214 or discharge papers, and a preferred national cemetery.',
+                              'If someone is applying on behalf of the Veteran, extra proof may be needed. VA Form 21-22 or 21-22a may also be required in some cases.',
+                              'VA cannot guarantee a specific cemetery or gravesite in advance even if a preferred cemetery is listed.',
+                              'The family should know where the DD214, important papers, and any pre-need decision letter are stored.',
+                              'Funeral home or cremation provider services are generally not paid by VA/NCA and are usually the family\'s expense. A burial allowance reimbursement may be available in eligible situations.',
+                            ].map((item) => (
+                              <Text key={item} style={styles.guideBullet}>• {item}</Text>
+                            ))}
+                          </View>
+                        </View>
+
+                        {/* Step by step */}
+                        {[
+                          {
+                            id: 'nca_step1',
+                            emoji: '🏛️',
+                            title: 'Confirm this is the right burial path',
+                            helper: 'This section is for VA national cemetery planning and NCA memorial benefits. Arlington National Cemetery has its own separate eligibility process. State, tribal, or territory Veterans cemeteries may also have their own pre-need rules.',
+                          },
+                          {
+                            id: 'nca_step2',
+                            emoji: '📄',
+                            title: 'Gather the records now',
+                            helper: 'Collect the DD214 or other discharge documents, identifying information, family relationship documents if needed, and the preferred cemetery choice. VA specifically says discharge papers are very important for establishing burial eligibility.',
+                          },
+                          {
+                            id: 'nca_step3',
+                            emoji: '📋',
+                            title: 'Apply for pre-need eligibility before time of need',
+                            helper: 'The main planning form is VA Form 40-10007 — Application for Pre-Need Determination of Eligibility for Burial in a VA National Cemetery. This can be submitted online or by mail or fax. This form is only for use before death.',
+                          },
+                          {
+                            id: 'nca_step4',
+                            emoji: '🗄️',
+                            title: 'Save the decision and tell the right people',
+                            helper: 'Store the decision letter in the Document Vault and make sure the trusted person or family knows where it is. The pre-need letter helps make things easier later, but it does not reserve a specific gravesite.',
+                          },
+                          {
+                            id: 'nca_step5',
+                            emoji: '📞',
+                            title: 'At time of need — schedule the burial',
+                            helper: 'The family or funeral director contacts the National Cemetery Scheduling Office.\n\n📞 800-535-1117 (TTY: 711)\n\nDischarge papers can be faxed to 866-900-6417, or scanned and emailed to NCA.Scheduling@va.gov, then call to confirm. National cemeteries are generally open for burials Monday through Friday.',
+                          },
+                          {
+                            id: 'nca_step6',
+                            emoji: '🎖️',
+                            title: 'Request military funeral honors and memorial items',
+                            helper: 'The family can request military funeral honors through the funeral director, a Veterans Service Organization, or VA national cemetery staff. Military funeral honors include Taps and 2 uniformed service members presenting the burial flag.',
+                          },
+                          {
+                            id: 'nca_step7',
+                            emoji: '💰',
+                            title: 'Apply for burial reimbursement if eligible',
+                            helper: 'Families who paid burial or funeral costs may be able to apply for a burial allowance and transportation reimbursement. The main form is VA Form 21P-530EZ — Application for Burial Benefits. Do not use hardcoded dollar amounts — check the official VA page for current eligibility and rates.',
+                          },
+                        ].map((section, index) => {
+                          const isOpen = Boolean(openBurialSections[section.id]);
+                          return (
+                            <View key={section.id} style={styles.guideSectionCard}>
+                              <TouchableOpacity
+                                style={styles.guideSectionHeader}
+                                onPress={() => toggleBurialSection(section.id)}
+                                activeOpacity={0.85}
+                              >
+                                <View style={styles.guideSectionHeaderCopy}>
+                                  <Text style={styles.guideStepLabel}>Step {index + 1}</Text>
+                                  <Text style={styles.guideSectionTitle}>
+                                    {section.emoji} {section.title}
+                                  </Text>
+                                </View>
+                                <Text style={styles.guideSectionIcon}>{isOpen ? '−' : '+'}</Text>
+                              </TouchableOpacity>
+                              {isOpen && (
+                                <View style={styles.guideSectionBody}>
+                                  <Text style={styles.guideHelper}>{section.helper}</Text>
+                                </View>
+                              )}
+                            </View>
+                          );
+                        })}
+
+                        {/* Helpful forms and links */}
+                        <View style={styles.guideSectionCard}>
+                          <Text style={[styles.guideStepLabel, { padding: 12 }]}>Helpful forms and links</Text>
+                          <View style={{ padding: 12, gap: 10 }}>
+                            <TouchableOpacity
+                              style={styles.primaryButton}
+                              activeOpacity={0.85}
+                              onPress={() => openExternalSite('https://www.cem.va.gov/burial-memorial-benefits/')}
+                            >
+                              <Text style={styles.primaryButtonText}>NCA Burial & Memorial Benefits</Text>
+                            </TouchableOpacity>
+                            {[
+                              { label: 'Eligibility for Burial in a VA National Cemetery', url: 'https://www.va.gov/burials-memorials/eligibility/' },
+                              { label: 'Apply for Pre-Need Eligibility', url: 'https://www.va.gov/burials-memorials/pre-need-eligibility/' },
+                              { label: 'Download VA Form 40-10007', url: 'https://www.va.gov/forms/40-10007/' },
+                              { label: 'Schedule a Burial', url: 'https://www.va.gov/burials-memorials/schedule-a-burial/' },
+                              { label: 'Find a Cemetery', url: 'https://www.cem.va.gov/cems/listcem.asp' },
+                              { label: 'Nationwide Gravesite Locator', url: 'https://gravelocator.cem.va.gov/' },
+                              { label: 'Veterans Legacy Memorial', url: 'https://www.vlm.cem.va.gov/' },
+                              { label: 'Burial Allowance Info', url: 'https://www.va.gov/burials-memorials/veterans-burial-allowance/' },
+                              { label: 'Download VA Form 21P-530EZ', url: 'https://www.va.gov/forms/21p-530ez/' },
+                              { label: 'Presidential Memorial Certificate', url: 'https://www.va.gov/burials-memorials/memorial-items/presidential-memorial-certificates/' },
+                              { label: 'Download VA Form 40-0247', url: 'https://www.va.gov/forms/40-0247/' },
+                              { label: 'Burial Flag Info', url: 'https://www.cem.va.gov/burial-memorial-benefits/' },
+                              { label: 'Download VA Form 27-2008', url: 'https://www.va.gov/find-forms/about-form-27-2008/' },
+                              { label: 'Headstone / Marker / Medallion', url: 'https://www.cem.va.gov/hmm/order_instructions.asp' },
+                              { label: 'Download VA Form 40-1330', url: 'https://www.va.gov/find-forms/about-form-40-1330/' },
+                              { label: 'Download VA Form 40-1330M', url: 'https://www.va.gov/find-forms/about-form-40-1330m/' },
+                            ].map((link) => (
+                              <TouchableOpacity
+                                key={link.label}
+                                style={styles.secondaryButton}
+                                activeOpacity={0.85}
+                                onPress={() => openExternalSite(link.url)}
+                              >
+                                <Text style={styles.secondaryButtonText}>{link.label}</Text>
+                              </TouchableOpacity>
+                            ))}
+                          </View>
+                        </View>
+
+                        {/* Legacy note */}
+                        <View style={[styles.guideSectionCard, { borderColor: Colors.gold, borderWidth: 1 }]}>
+                          <View style={{ padding: 12 }}>
+                            <Text style={[styles.guideStepLabel, { color: Colors.gold }]}>📖 Veterans Legacy Memorial</Text>
+                            <Text style={[styles.guideHelper, { marginTop: 6 }]}>
+                              If the Veteran has been approved for pre-need eligibility, they may be able to use the Veterans Legacy Memorial living Veteran feature to privately add images, autobiography details, timelines, and historical documents that can later appear on their memorial page after death.
+                            </Text>
+                            <TouchableOpacity
+                              style={[styles.secondaryButton, { marginTop: 10 }]}
+                              activeOpacity={0.85}
+                              onPress={() => openExternalSite('https://www.vlm.cem.va.gov/livingveteranhome')}
+                            >
+                              <Text style={styles.secondaryButtonText}>Open Veterans Legacy Memorial</Text>
+                            </TouchableOpacity>
+                          </View>
+                        </View>
+
+                      </View>
+                    )}
+                  </View>
+
                 </View>
               )}
             </View>

@@ -255,6 +255,30 @@ Veterans Education Network video walkthrough: coming soon`;
     }));
   };
   const [openBurialSections, setOpenBurialSections] = useState<Record<string, boolean>>({});
+  const [form21p534ezDraft, setForm21p534ezDraft] = React.useState<FormDraft>(
+    makeDefaultDraft(
+      'va_form_21p_534ez',
+      'VA Form 21P-534EZ — DIC Survivor Benefit',
+      'pdf',
+      'https://www.va.gov/forms/21p-534ez/',
+      'online',
+      {},
+      true,
+      true,
+    )
+  );
+
+  React.useEffect(() => {
+    loadDraft('va_form_21p_534ez').then((saved) => {
+      if (saved) {
+        setForm21p534ezDraft((current) => ({
+          ...saved,
+          officialUrl: current.officialUrl,
+        }));
+      }
+    });
+  }, []);
+
   const [form22_5490Draft, setForm22_5490Draft] = React.useState<FormDraft>(
     makeDefaultDraft(
       'va_form_22_5490',
@@ -1120,6 +1144,12 @@ Veterans Education Network video walkthrough: coming soon`;
                         <Text style={styles.secondaryButtonText}>In-service death form</Text>
                       </TouchableOpacity>
                     </View>
+
+                    {/* Form Workspace — 21P-534EZ */}
+                    <FormWorkspaceCard
+                      draft={form21p534ezDraft}
+                      onDraftChange={setForm21p534ezDraft}
+                    />
                   </View>
                   <View style={[styles.card, styles.dicGuideCard]}>
                     <TouchableOpacity

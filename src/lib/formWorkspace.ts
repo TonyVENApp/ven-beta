@@ -10,6 +10,16 @@ export type FormStatus =
   | 'ready_to_review'
   | 'submitted';
 
+export interface FormField {
+  key: string;
+  label: string;
+  placeholder: string;
+  inputType: 'text' | 'date' | 'select';
+  options?: string[];
+  required: boolean;
+  hint?: string;
+}
+
 export interface FormDraft {
   id: string;
   title: string;
@@ -19,6 +29,7 @@ export interface FormDraft {
   completionPercent: number;
   prefillData: Record<string, string>;
   userFields: Record<string, string>;
+  fieldDefinitions: FormField[];
   lastEditedAt: string | null;
   reminderEnabled: boolean;
   printEnabled: boolean;
@@ -81,6 +92,7 @@ export function makeDefaultDraft(
   prefillData: Record<string, string> = {},
   printEnabled = true,
   shareEnabled = true,
+  fieldDefinitions: FormField[] = [],
 ): FormDraft {
   return {
     id,
@@ -91,12 +103,24 @@ export function makeDefaultDraft(
     completionPercent: 0,
     prefillData,
     userFields: {},
+    fieldDefinitions,
     lastEditedAt: null,
     reminderEnabled: false,
     printEnabled,
     shareEnabled,
     submissionMethod,
   };
+}
+
+export function computeCompletion(draft: FormDraft): number {
+  const defs = draft.fieldDefinitions ?? [];
+  const required = defs.filter((f) => f.required);
+  if (required.length === 0) return draft.completionPercent;
+  const filled = required.filter((f) => {
+    const val = draft.userFields[f.key];
+    return val !== undefined && val.trim() !== '';
+  });
+  return Math.round((filled.length / required.length) * 100);
 }
 
 // ─── Status label helper ──────────────────────────────────────────────────────

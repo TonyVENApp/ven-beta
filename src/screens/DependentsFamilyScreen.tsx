@@ -385,6 +385,77 @@ Veterans Education Network video walkthrough: coming soon`;
       {},
       true,
       true,
+      [
+        {
+          key: 'full_name',
+          label: 'Full legal name',
+          placeholder: 'First Middle Last',
+          inputType: 'text',
+          required: true,
+          hint: 'Enter your name exactly as it appears on your military records.',
+        },
+        {
+          key: 'date_of_birth',
+          label: 'Date of birth',
+          placeholder: 'MM/DD/YYYY',
+          inputType: 'date',
+          required: true,
+        },
+        {
+          key: 'ssn',
+          label: 'Social Security number',
+          placeholder: 'XXX-XX-XXXX',
+          inputType: 'text',
+          required: true,
+          hint: 'VA uses this to locate your service records.',
+        },
+        {
+          key: 'applying_for',
+          label: 'Applying for',
+          placeholder: '',
+          inputType: 'select',
+          options: ['Myself', 'Someone else'],
+          required: true,
+        },
+        {
+          key: 'branch_of_service',
+          label: 'Branch of service',
+          placeholder: '',
+          inputType: 'select',
+          options: ['Army', 'Navy', 'Air Force', 'Marine Corps', 'Coast Guard', 'Space Force', 'Army National Guard', 'Air National Guard'],
+          required: true,
+        },
+        {
+          key: 'service_date_from',
+          label: 'Service start date',
+          placeholder: 'MM/DD/YYYY',
+          inputType: 'date',
+          required: true,
+        },
+        {
+          key: 'service_date_to',
+          label: 'Service end date',
+          placeholder: 'MM/DD/YYYY',
+          inputType: 'date',
+          required: true,
+        },
+        {
+          key: 'discharge_character',
+          label: 'Character of discharge',
+          placeholder: '',
+          inputType: 'select',
+          options: ['Honorable', 'General', 'Other Than Honorable', 'Bad Conduct', 'Dishonorable', 'Uncharacterized'],
+          required: true,
+        },
+        {
+          key: 'preferred_cemetery',
+          label: 'Preferred VA national cemetery',
+          placeholder: 'e.g. Florida National Cemetery',
+          inputType: 'text',
+          required: false,
+          hint: 'VA cannot guarantee your preferred cemetery but will note your preference.',
+        },
+      ],
     )
   );
 
@@ -394,6 +465,7 @@ Veterans Education Network video walkthrough: coming soon`;
         setForm40_10007Draft((current) => ({
           ...saved,
           officialUrl: current.officialUrl,
+          fieldDefinitions: current.fieldDefinitions,
         }));
       }
     });

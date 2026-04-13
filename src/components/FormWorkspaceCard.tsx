@@ -1,37 +1,51 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
   TouchableOpacity,
   StyleSheet,
   Linking,
+  TextInput,
 } from 'react-native';
 import { Colors, Spacing, Radius, Font } from '../theme';
 import {
   FormDraft,
+  FormField,
   statusLabel,
   statusColor,
   saveDraft,
+  computeCompletion,
 } from '../lib/formWorkspace';
-
-// ─── Props ────────────────────────────────────────────────────────────────────
 
 interface FormWorkspaceCardProps {
   draft: FormDraft;
   onDraftChange: (updated: FormDraft) => void;
 }
 
-// ─── Component ────────────────────────────────────────────────────────────────
-
 export function FormWorkspaceCard({ draft, onDraftChange }: FormWorkspaceCardProps) {
+  const [expanded, setExpanded] = useState(false);
 
   const prefillKeys = Object.keys(draft.prefillData);
-  const userFieldKeys = Object.keys(draft.userFields);
+  const fieldDefs = draft.fieldDefinitions ?? [];
+  const hasFields = fieldDefs.length > 0;
+
+  const handleFieldChange = async (key: string, value: string) => {
+    const updatedFields = { ...draft.userFields, [key]: value };
+    const updatedDraft: FormDraft = {
+      ...draft,
+      userFields: updatedFields,
+      status: 'in_progress',
+      completionPercent: computeCompletion({ ...draft, userFields: updatedFields }),
+    };
+    onDraftChange(updatedDraft);
+    await saveDraft(updatedDraft);
+  };
 
   const handleSaveDraft = async () => {
     const updated: FormDraft = {
       ...draft,
       status: draft.status === 'not_started' ? 'in_progress' : draft.status,
+      completionPercent: computeCompletion(draft),
     };
     await saveDraft(updated);
     onDraftChange(updated);
@@ -54,25 +68,24 @@ export function FormWorkspaceCard({ draft, onDraftChange }: FormWorkspaceCardPro
 
   const sColor = statusColor(draft.status);
   const sLabel = statusLabel(draft.status);
+  const completion = computeCompletion(draft);
 
   return (
     <View style={styles.container}>
 
-      {/* ── Status + Title ── */}
       <View style={styles.headerRow}>
         <View style={[styles.statusBadge, { backgroundColor: sColor }]}>
           <Text style={styles.statusText}>{sLabel}</Text>
         </View>
       </View>
+
       <Text style={styles.title}>{draft.title}</Text>
 
-      {/* ── Progress bar ── */}
       <View style={styles.progressTrack}>
-        <View style={[styles.progressFill, { width: `${draft.completionPercent}%` }]} />
+        <View style={[styles.progressFill, { width: `${completion}%` as any }]} />
       </View>
-      <Text style={styles.progressLabel}>{draft.completionPercent}% complete</Text>
+      <Text style={styles.progressLabel}>{completion}% complete</Text>
 
-      {/* ── Prefilled by app ── */}
       {prefillKeys.length > 0 && (
         <View style={styles.section}>
           <Text style={styles.sectionLabel}>✅ We filled this for you</Text>
@@ -85,22 +98,64 @@ export function FormWorkspaceCard({ draft, onDraftChange }: FormWorkspaceCardPro
         </View>
       )}
 
-      {/* ── Still needed ── */}
-      {userFieldKeys.length > 0 && (
+      {hasFields && (
         <View style={styles.section}>
-          <Text style={styles.sectionLabelNeeded}>📝 Still needed from you</Text>
-          {userFieldKeys.map((key) => (
-            <View key={key} style={styles.fieldRow}>
-              <Text style={styles.fieldKey}>{key}</Text>
-              <Text style={[styles.fieldValue, { color: Colors.gray500 }]}>
-                {draft.userFields[key] || '—'}
-              </Text>
+          <TouchableOpacity
+            style={styles.fieldsHeader}
+            onPress={() => setExpanded(!expanded)}
+            activeOpacity={0.8}
+          >
+            <Text style={styles.sectionLabelNeeded}>📝 Fill in your information</Text>
+            <Text style={styles.fieldsToggle}>{expanded ? '−' : '+'}</Text>
+          </TouchableOpacity>
+
+          {expanded && (
+            <View style={styles.fieldsWrapper}>
+              {fieldDefs.map((field: FormField) => (
+                <View key={field.key} style={styles.fieldEntry}>
+                  <Text style={styles.fieldEntryLabel}>
+                    {field.label}{field.required ? ' *' : ''}
+                  </Text>
+                  {field.hint ? (
+                    <Text style={styles.fieldHint}>{field.hint}</Text>
+                  ) : null}
+                  {field.inputType === 'select' && field.options ? (
+                    <View style={styles.optionsRow}>
+                      {field.options.map((opt) => (
+                        <TouchableOpacity
+                          key={opt}
+                          style={[
+                            styles.optionChip,
+                            draft.userFields[field.key] === opt && styles.optionChipSelected,
+                          ]}
+                          onPress={() => handleFieldChange(field.key, opt)}
+                          activeOpacity={0.8}
+                        >
+                          <Text style={[
+                            styles.optionChipText,
+                            draft.userFields[field.key] === opt && styles.optionChipTextSelected,
+                          ]}>
+                            {opt}
+                          </Text>
+                        </TouchableOpacity>
+                      ))}
+                    </View>
+                  ) : (
+                    <TextInput
+                      style={styles.textInput}
+                      value={draft.userFields[field.key] || ''}
+                      onChangeText={(val) => handleFieldChange(field.key, val)}
+                      placeholder={field.placeholder}
+                      placeholderTextColor={Colors.gray700}
+                    />
+                  )}
+                </View>
+              ))}
             </View>
-          ))}
+          )}
         </View>
       )}
 
-      {/* ── Reminder toggle ── */}
       <TouchableOpacity
         style={styles.reminderRow}
         onPress={handleToggleReminder}
@@ -114,7 +169,6 @@ export function FormWorkspaceCard({ draft, onDraftChange }: FormWorkspaceCardPro
         </View>
       </TouchableOpacity>
 
-      {/* ── Action buttons ── */}
       <TouchableOpacity style={styles.saveDraftBtn} onPress={handleSaveDraft} activeOpacity={0.85}>
         <Text style={styles.saveDraftText}>Save Draft</Text>
       </TouchableOpacity>
@@ -123,7 +177,6 @@ export function FormWorkspaceCard({ draft, onDraftChange }: FormWorkspaceCardPro
         <Text style={styles.continueBtnText}>Continue on VA.gov →</Text>
       </TouchableOpacity>
 
-      {/* ── Last edited ── */}
       {draft.lastEditedAt && (
         <Text style={styles.lastEdited}>
           Last saved: {new Date(draft.lastEditedAt).toLocaleDateString()}
@@ -133,8 +186,6 @@ export function FormWorkspaceCard({ draft, onDraftChange }: FormWorkspaceCardPro
     </View>
   );
 }
-
-// ─── Styles ───────────────────────────────────────────────────────────────────
 
 const styles = StyleSheet.create({
   container: {
@@ -198,7 +249,76 @@ const styles = StyleSheet.create({
     color: Colors.white,
     fontSize: 12,
     fontWeight: '700',
-    marginBottom: 6,
+    flex: 1,
+  },
+  fieldsHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 8,
+    borderTopWidth: 1,
+    borderTopColor: Colors.navyLight,
+  },
+  fieldsToggle: {
+    color: Colors.gold,
+    fontSize: 20,
+    fontWeight: '300',
+    lineHeight: 24,
+  },
+  fieldsWrapper: {
+    marginTop: 8,
+  },
+  fieldEntry: {
+    marginBottom: 14,
+  },
+  fieldEntryLabel: {
+    color: Colors.gray300,
+    fontSize: 12,
+    fontWeight: '700',
+    marginBottom: 4,
+  },
+  fieldHint: {
+    color: Colors.gray500,
+    fontSize: 11,
+    marginBottom: 4,
+    lineHeight: 16,
+  },
+  textInput: {
+    backgroundColor: Colors.navy,
+    borderRadius: Radius.sm,
+    borderWidth: 1,
+    borderColor: Colors.navyLight,
+    color: Colors.white,
+    fontSize: 14,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+  },
+  optionsRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginTop: 4,
+  },
+  optionChip: {
+    borderRadius: Radius.full,
+    borderWidth: 1,
+    borderColor: Colors.navyLight,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    backgroundColor: Colors.navy,
+    marginRight: 8,
+    marginBottom: 8,
+  },
+  optionChipSelected: {
+    backgroundColor: Colors.gold,
+    borderColor: Colors.gold,
+  },
+  optionChipText: {
+    color: Colors.gray300,
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  optionChipTextSelected: {
+    color: Colors.navy,
   },
   fieldRow: {
     flexDirection: 'row',

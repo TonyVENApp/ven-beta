@@ -12,6 +12,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { supabase } from '../lib/supabase';
+import * as SecureStore from 'expo-secure-store';
 import { DASHBOARD_MODE_LABELS, type DashboardMode } from '../lib/dashboardMode';
 import { Colors, Spacing, Radius, Shadow, Font } from '../theme';
 
@@ -34,6 +35,88 @@ interface VeteranInfo {
   city: string;
   zipCode: string;
   phoneNumber: string;
+  dateOfBirth: string;
+  serviceStartDate: string;
+  dischargeCharacter: string;
+  preferredCemetery: string;
+}
+
+const SSN_STORE_KEY = 'ven_veteran_ssn';
+
+function SSNField() {
+  const [ssn, setSsn] = React.useState('');
+  const [masked, setMasked] = React.useState(true);
+  const [saved, setSaved] = React.useState(false);
+
+  React.useEffect(() => {
+    SecureStore.getItemAsync(SSN_STORE_KEY).then((val) => {
+      if (val) setSsn(val);
+    });
+  }, []);
+
+  const handleSave = async () => {
+    await SecureStore.setItemAsync(SSN_STORE_KEY, ssn);
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
+  };
+
+  const handleClear = async () => {
+    await SecureStore.deleteItemAsync(SSN_STORE_KEY);
+    setSsn('');
+  };
+
+  const displayValue = masked && ssn.length > 0
+    ? '***-**-' + ssn.slice(-4)
+    : ssn;
+
+  return (
+    <View>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+        <TextInput
+          style={[profileStyles.fieldInput, { flex: 1 }]}
+          value={displayValue}
+          onChangeText={(v) => {
+            setMasked(false);
+            setSsn(v);
+          }}
+          onFocus={() => setMasked(false)}
+          onBlur={() => setMasked(true)}
+          placeholder="XXX-XX-XXXX"
+          placeholderTextColor={Colors.gray500}
+          keyboardType="numbers-and-punctuation"
+          secureTextEntry={false}
+          maxLength={11}
+        />
+        <TouchableOpacity
+          onPress={() => setMasked(!masked)}
+          style={{ padding: 8 }}
+          activeOpacity={0.7}
+        >
+          <Text style={{ color: Colors.gold, fontSize: 12, fontWeight: '700' }}>
+            {masked ? 'SHOW' : 'HIDE'}
+          </Text>
+        </TouchableOpacity>
+      </View>
+      <View style={{ flexDirection: 'row', gap: 8, marginTop: 8 }}>
+        <TouchableOpacity
+          style={{ flex: 1, backgroundColor: Colors.gold, borderRadius: 8, paddingVertical: 10, alignItems: 'center' }}
+          onPress={handleSave}
+          activeOpacity={0.85}
+        >
+          <Text style={{ color: Colors.navy, fontSize: 13, fontWeight: '800' }}>
+            {saved ? '✅ Saved' : 'Save to device'}
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{ flex: 1, borderWidth: 1, borderColor: Colors.navyLight, borderRadius: 8, paddingVertical: 10, alignItems: 'center' }}
+          onPress={handleClear}
+          activeOpacity={0.85}
+        >
+          <Text style={{ color: Colors.gray500, fontSize: 13, fontWeight: '700' }}>Clear</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
 }
 
 const SERVICE_BRANCHES = [
@@ -204,6 +287,10 @@ export default function UserProfile({ onBack, onSaveComplete }: UserProfileProps
     city: '',
     zipCode: '',
     phoneNumber: '',
+    dateOfBirth: '',
+    serviceStartDate: '',
+    dischargeCharacter: '',
+    preferredCemetery: '',
   });
 
   // Notification preferences — stored locally, no backend needed yet
@@ -222,7 +309,7 @@ export default function UserProfile({ onBack, onSaveComplete }: UserProfileProps
 
       const { data: profile } = await supabase
         .from('profiles')
-        .select('full_name, address_line1, city, state, zip_code, phone_number, branch, separation_year, va_rating_level, va_is_pt, va_is_tdiu')
+        .select('full_name, address_line1, city, state, zip_code, phone_number, branch, separation_year, va_rating_level, va_is_pt, va_is_tdiu, date_of_birth, service_start_date, discharge_character, preferred_cemetery')
         .eq('id', user.id)
         .single();
 
@@ -237,6 +324,10 @@ export default function UserProfile({ onBack, onSaveComplete }: UserProfileProps
           phoneNumber: profile.phone_number ?? '',
           branch: profile.branch ?? '',
           separationYear: profile.separation_year ?? '',
+          dateOfBirth: profile.date_of_birth ?? '',
+          serviceStartDate: profile.service_start_date ?? '',
+          dischargeCharacter: profile.discharge_character ?? '',
+          preferredCemetery: profile.preferred_cemetery ?? '',
           vaRatingLevel: profile.va_rating_level ?? null,
           vaIsPt: profile.va_is_pt ?? null,
           vaIsTdiu: profile.va_is_tdiu ?? null,
@@ -266,6 +357,10 @@ export default function UserProfile({ onBack, onSaveComplete }: UserProfileProps
       va_rating_level: veteranInfo.vaRatingLevel,
       va_is_pt: veteranInfo.vaIsPt,
       va_is_tdiu: veteranInfo.vaIsTdiu,
+      date_of_birth: veteranInfo.dateOfBirth,
+      service_start_date: veteranInfo.serviceStartDate,
+      discharge_character: veteranInfo.dischargeCharacter,
+      preferred_cemetery: veteranInfo.preferredCemetery,
     });
     setSaving(false);
     if (error) {
@@ -397,6 +492,63 @@ export default function UserProfile({ onBack, onSaveComplete }: UserProfileProps
             autoCapitalize="words"
           />
 
+          <Text style={[profileStyles.fieldLabel, { marginTop: 14 }]}>DATE OF BIRTH</Text>
+          <TextInput
+            style={profileStyles.fieldInput}
+            value={veteranInfo.dateOfBirth}
+            onChangeText={(v) => setVeteranInfo((p) => ({ ...p, dateOfBirth: v }))}
+            placeholder="MM/DD/YYYY"
+            placeholderTextColor={Colors.gray500}
+            keyboardType="numbers-and-punctuation"
+          />
+
+          <Text style={[profileStyles.fieldLabel, { marginTop: 14 }]}>SERVICE START DATE</Text>
+          <TextInput
+            style={profileStyles.fieldInput}
+            value={veteranInfo.serviceStartDate}
+            onChangeText={(v) => setVeteranInfo((p) => ({ ...p, serviceStartDate: v }))}
+            placeholder="MM/DD/YYYY"
+            placeholderTextColor={Colors.gray500}
+            keyboardType="numbers-and-punctuation"
+          />
+
+          <Text style={[profileStyles.fieldLabel, { marginTop: 14 }]}>CHARACTER OF DISCHARGE</Text>
+          <TouchableOpacity
+            style={profileStyles.fieldSelect}
+            onPress={() => {
+              Alert.alert(
+                'Character of Discharge',
+                'Select your discharge type',
+                [
+                  'Honorable',
+                  'General',
+                  'Other Than Honorable',
+                  'Bad Conduct',
+                  'Dishonorable',
+                  'Uncharacterized',
+                ].map((opt) => ({
+                  text: opt,
+                  onPress: () => setVeteranInfo((p) => ({ ...p, dischargeCharacter: opt })),
+                })).concat([{ text: 'Cancel', onPress: () => {} }])
+              );
+            }}
+          >
+            <Text style={veteranInfo.dischargeCharacter ? profileStyles.fieldSelectValue : profileStyles.fieldSelectPlaceholder}>
+              {veteranInfo.dischargeCharacter || 'Select discharge type...'}
+            </Text>
+            <Text style={profileStyles.fieldSelectChevron}>›</Text>
+          </TouchableOpacity>
+
+          <Text style={[profileStyles.fieldLabel, { marginTop: 14 }]}>PREFERRED VA CEMETERY</Text>
+          <TextInput
+            style={profileStyles.fieldInput}
+            value={veteranInfo.preferredCemetery}
+            onChangeText={(v) => setVeteranInfo((p) => ({ ...p, preferredCemetery: v }))}
+            placeholder="e.g. Florida National Cemetery"
+            placeholderTextColor={Colors.gray500}
+            autoCapitalize="words"
+          />
+
           <Text style={[profileStyles.fieldLabel, { marginTop: 14 }]}>VA DISABILITY STATUS</Text>
           <TouchableOpacity
             style={profileStyles.fieldSelect}
@@ -407,6 +559,19 @@ export default function UserProfile({ onBack, onSaveComplete }: UserProfileProps
             </Text>
             <Text style={profileStyles.fieldSelectChevron}>›</Text>
           </TouchableOpacity>
+        </View>
+
+        {/* ── SSN — Local Only ── */}
+        <SectionHeader label="SENSITIVE INFORMATION" />
+        <View style={profileStyles.card}>
+          <View style={{ backgroundColor: Colors.navyLight, borderRadius: 8, padding: 12, marginBottom: 14 }}>
+            <Text style={{ color: Colors.gold, fontSize: 12, fontWeight: '700', marginBottom: 4 }}>🔒 Stored on your device only</Text>
+            <Text style={{ color: Colors.gray300, fontSize: 12, lineHeight: 18 }}>
+              Your Social Security number is saved only on this phone. It is never uploaded to any server or cloud. It is used only to help pre-fill VA forms on this device.
+            </Text>
+          </View>
+          <Text style={profileStyles.fieldLabel}>SOCIAL SECURITY NUMBER</Text>
+          <SSNField />
         </View>
 
         {/* ── Account ── */}

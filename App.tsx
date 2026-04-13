@@ -18,6 +18,7 @@ import { EducationBenefits } from './src/screens/EducationBenefits';
 import { EducationApplicationForm } from './src/screens/EducationApplicationForm';
 import { StateBenefitsScreen } from './src/screens/StateBenefitsScreen';
 import { VeteranNewsScreen } from './src/screens/VeteranNewsScreen';
+import { FormReviewScreen } from './src/screens/FormReviewScreen';
 import { getDashboardMode } from './src/lib/dashboardMode';
 import { supabase } from './src/lib/supabase';
 import { Colors } from './src/theme';
@@ -36,10 +37,19 @@ type MainScreen =
   | 'educationApplication'
   | 'stateBenefits'
   | 'veteranNews'
-  | 'cosponsor';
+  | 'cosponsor'
+  | 'formReview';
 
 type AuthScreen = 'login' | 'signup' | 'forgot';
 type EducationBenefit = 'ch33' | 'ch30' | 'vre';
+
+type FormReviewParams = {
+  formId: string;
+  formTitle: string;
+  prefillFields: { label: string; value: string }[];
+  userFields: { label: string; value: string; required: boolean; filled: boolean }[];
+  returnScreen: MainScreen;
+};
 
 type VeteranProfile = {
   full_name?: string | null;
@@ -106,6 +116,7 @@ export default function App() {
   const [authScreen, setAuthScreen] = useState<AuthScreen>('login');
   const [screen, setScreen] = useState<MainScreen>('dashboard');
   const [educationBenefit, setEducationBenefit] = useState<EducationBenefit>('ch33');
+  const [formReviewParams, setFormReviewParams] = useState<FormReviewParams | null>(null);
   const [profile, setProfile] = useState<VeteranProfile | null>(null);
   const [savedDashboardRating, setSavedDashboardRating] = useState<number | null>(null);
   const [initializing, setInitializing] = useState(true);
@@ -349,6 +360,21 @@ export default function App() {
       <>
         <StatusBar style="light" />
         <VeteranNewsScreen onBack={() => setScreen('dashboard')} />
+      </>
+    );
+  }
+
+  if (screen === 'formReview' && formReviewParams) {
+    return (
+      <>
+        <StatusBar style="light" />
+        <FormReviewScreen
+          formId={formReviewParams.formId}
+          formTitle={formReviewParams.formTitle}
+          prefillFields={formReviewParams.prefillFields}
+          userFields={formReviewParams.userFields}
+          onBack={() => setScreen(formReviewParams.returnScreen)}
+        />
       </>
     );
   }

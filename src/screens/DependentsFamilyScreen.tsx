@@ -745,7 +745,7 @@ Veterans Education Network video walkthrough: coming soon`;
                 onPress={() => setShowFormHelp((current) => !current)}
                 activeOpacity={0.8}
               >
-                <Text style={styles.sectionTitle}>How to fill out VA Form 22-5490</Text>
+                <Text style={[styles.sectionTitle, { flex: 1, paddingRight: 8 }]}>How to fill out VA Form 22-5490</Text>
                 <Text style={styles.expandIcon}>{showFormHelp ? '−' : '+'}</Text>
               </TouchableOpacity>
               {showFormHelp && (
@@ -803,7 +803,7 @@ Veterans Education Network video walkthrough: coming soon`;
                 onPress={() => setShowLoginOptions((current) => !current)}
                 activeOpacity={0.8}
               >
-                <Text style={styles.sectionTitle}>Login Options</Text>
+                <Text style={[styles.sectionTitle, { flex: 1, paddingRight: 8 }]}>Login Options</Text>
                 <Text style={styles.expandIcon}>{showLoginOptions ? '−' : '+'}</Text>
               </TouchableOpacity>
               {showLoginOptions && (
@@ -1161,7 +1161,7 @@ Veterans Education Network video walkthrough: coming soon`;
                       onPress={() => setShowDicFormHelp((current) => !current)}
                       activeOpacity={0.8}
                     >
-                      <Text style={styles.sectionTitle}>How to fill out VA Form 21P-534EZ</Text>
+                      <Text style={[styles.sectionTitle, { flex: 1, paddingRight: 8 }]}>How to fill out VA Form 21P-534EZ</Text>
                       <Text style={styles.expandIcon}>{showDicFormHelp ? '−' : '+'}</Text>
                     </TouchableOpacity>
                     {showDicFormHelp && (
@@ -1256,7 +1256,7 @@ Veterans Education Network video walkthrough: coming soon`;
                       onPress={() => toggleWillSection('will_guide_open')}
                       activeOpacity={0.8}
                     >
-                      <Text style={styles.sectionTitle}>Before You Start & Step-by-Step Guide</Text>
+                      <Text style={[styles.sectionTitle, { flex: 1, paddingRight: 8 }]}>Before You Start & Step-by-Step Guide</Text>
                       <Text style={styles.expandIcon}>{openWillSections['will_guide_open'] ? '−' : '+'}</Text>
                     </TouchableOpacity>
                     {openWillSections['will_guide_open'] && (

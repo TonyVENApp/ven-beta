@@ -17,12 +17,25 @@ import {
   computeCompletion,
 } from '../lib/formWorkspace';
 
+interface ReviewUserField {
+  label: string;
+  value: string;
+  required: boolean;
+  filled: boolean;
+}
+
 interface FormWorkspaceCardProps {
   draft: FormDraft;
   onDraftChange: (updated: FormDraft) => void;
+  onReview?: (params: {
+    formId: string;
+    formTitle: string;
+    prefillFields: { label: string; value: string }[];
+    userFields: ReviewUserField[];
+  }) => void;
 }
 
-export function FormWorkspaceCard({ draft, onDraftChange }: FormWorkspaceCardProps) {
+export function FormWorkspaceCard({ draft, onDraftChange, onReview }: FormWorkspaceCardProps) {
   const [expanded, setExpanded] = useState(false);
 
   const prefillKeys = Object.keys(draft.prefillData);
@@ -63,9 +76,30 @@ export function FormWorkspaceCard({ draft, onDraftChange }: FormWorkspaceCardPro
   };
 
   const handleContinue = () => {
-    Linking.openURL(draft.officialUrl).catch((e) =>
-      console.error('[FormWorkspaceCard] openURL error:', e)
-    );
+    if (onReview) {
+      const prefillFields = Object.keys(draft.prefillData).map((key) => ({
+        label: key,
+        value: draft.prefillData[key],
+      }));
+      const userFields: ReviewUserField[] = (draft.fieldDefinitions ?? [])
+        .filter((f) => !draft.prefillData[f.key])
+        .map((f) => ({
+          label: f.label,
+          value: draft.userFields[f.key] ?? '',
+          required: f.required,
+          filled: Boolean(draft.userFields[f.key]?.trim()),
+        }));
+      onReview({
+        formId: draft.id,
+        formTitle: draft.title,
+        prefillFields,
+        userFields,
+      });
+    } else {
+      Linking.openURL(draft.officialUrl).catch((e) =>
+        console.error('[FormWorkspaceCard] openURL error:', e)
+      );
+    }
   };
 
   const sColor = statusColor(draft.status);

@@ -21,9 +21,18 @@ interface DependentsFamilyProfile {
   va_is_tdiu?: boolean | null;
 }
 
+interface FormReviewParams {
+  formId: string;
+  formTitle: string;
+  prefillFields: { label: string; value: string }[];
+  userFields: { label: string; value: string; required: boolean; filled: boolean }[];
+}
+
 interface DependentsFamilyScreenProps {
   onBack: () => void;
   veteranProfile?: DependentsFamilyProfile | null;
+  setFormReviewParams: (params: FormReviewParams) => void;
+  onNavigateToReview: () => void;
 }
 
 type Chapter35Status = 'likely_eligible' | 'likely_not_eligible' | 'need_more_information';
@@ -133,6 +142,8 @@ function getChampvaAssessment(profile?: DependentsFamilyProfile | null) {
 export function DependentsFamilyScreen({
   onBack,
   veteranProfile,
+  setFormReviewParams,
+  onNavigateToReview,
 }: DependentsFamilyScreenProps) {
   const shareFamilyHandoff = async () => {
     const message = `Chapter 35 / DEA for Spouse or Child
@@ -1077,6 +1088,10 @@ Veterans Education Network video walkthrough: coming soon`;
               <FormWorkspaceCard
                 draft={form22_5490Draft}
                 onDraftChange={setForm22_5490Draft}
+                onReview={(params) => {
+                  setFormReviewParams(params);
+                  onNavigateToReview();
+                }}
               />
             </View>
 
@@ -1227,6 +1242,10 @@ Veterans Education Network video walkthrough: coming soon`;
                 <FormWorkspaceCard
                   draft={form10_10dDraft}
                   onDraftChange={setForm10_10dDraft}
+                  onReview={(params) => {
+                    setFormReviewParams(params);
+                    onNavigateToReview();
+                  }}
                 />
               </View>
             </View>
@@ -1364,6 +1383,10 @@ Veterans Education Network video walkthrough: coming soon`;
                     <FormWorkspaceCard
                       draft={form21p534ezDraft}
                       onDraftChange={setForm21p534ezDraft}
+                      onReview={(params) => {
+                        setFormReviewParams(params);
+                        onNavigateToReview();
+                      }}
                     />
                   </View>
 
@@ -1539,6 +1562,10 @@ Veterans Education Network video walkthrough: coming soon`;
                     <FormWorkspaceCard
                       draft={form10_0137Draft}
                       onDraftChange={setForm10_0137Draft}
+                      onReview={(params) => {
+                        setFormReviewParams(params);
+                        onNavigateToReview();
+                      }}
                     />
 
                     <TouchableOpacity
@@ -1701,6 +1728,10 @@ Veterans Education Network video walkthrough: coming soon`;
                         <FormWorkspaceCard
                           draft={form40_10007Draft}
                           onDraftChange={setForm40_10007Draft}
+                          onReview={(params) => {
+                            setFormReviewParams(params);
+                            onNavigateToReview();
+                          }}
                         />
 
                       </View>
@@ -1881,6 +1912,10 @@ Veterans Education Network video walkthrough: coming soon`;
                         <FormWorkspaceCard
                           draft={form21p530ezDraft}
                           onDraftChange={setForm21p530ezDraft}
+                          onReview={(params) => {
+                            setFormReviewParams(params);
+                            onNavigateToReview();
+                          }}
                         />
 
                       </View>

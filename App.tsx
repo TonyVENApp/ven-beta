@@ -317,7 +317,12 @@ export default function App() {
     return (
       <>
         <StatusBar style="light" />
-        <DependentsFamilyScreen onBack={() => setScreen('dashboard')} veteranProfile={profile} />
+        <DependentsFamilyScreen
+          onBack={() => setScreen('dashboard')}
+          veteranProfile={profile}
+          setFormReviewParams={(params) => setFormReviewParams({ ...params, returnScreen: 'dependents' })}
+          onNavigateToReview={() => setScreen('formReview')}
+        />
       </>
     );
   }

@@ -31,6 +31,27 @@ interface FormReviewScreenProps {
   onBack: () => void;
 }
 
+// ─── Label formatter ─────────────────────────────────────────────────────────
+
+function formatLabel(raw: string): string {
+  const map: Record<string, string> = {
+    full_name: 'Full Name',
+    branch_of_service: 'Branch of Service',
+    date_of_birth: 'Date of Birth',
+    service_date_from: 'Service Start Date',
+    service_date_to: 'Service End Date',
+    discharge_character: 'Discharge Character',
+    preferred_cemetery: 'Preferred Cemetery',
+    ssn: 'Social Security Number',
+    address_line1: 'Address',
+    city: 'City',
+    state: 'State',
+    zip_code: 'ZIP Code',
+    phone_number: 'Phone Number',
+  };
+  return map[raw] ?? raw.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export function FormReviewScreen({
@@ -90,7 +111,7 @@ export function FormReviewScreen({
                     index < prefillFields.length - 1 && styles.fieldRowBorder,
                   ]}
                 >
-                  <Text style={styles.fieldLabel}>{field.label}</Text>
+                  <Text style={styles.fieldLabel}>{formatLabel(field.label)}</Text>
                   <Text style={styles.fieldValue}>{field.value || '—'}</Text>
                 </View>
               ))}
@@ -115,7 +136,7 @@ export function FormReviewScreen({
                     ]}
                   >
                     <View style={styles.fieldLabelGroup}>
-                      <Text style={styles.fieldLabel}>{field.label}</Text>
+                      <Text style={styles.fieldLabel}>{formatLabel(field.label)}</Text>
                       {isMissing && (
                         <Text style={styles.missingText}>Required — missing</Text>
                       )}

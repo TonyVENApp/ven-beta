@@ -255,6 +255,30 @@ Veterans Education Network video walkthrough: coming soon`;
     }));
   };
   const [openBurialSections, setOpenBurialSections] = useState<Record<string, boolean>>({});
+  const [form10_10dDraft, setForm10_10dDraft] = React.useState<FormDraft>(
+    makeDefaultDraft(
+      'va_form_10_10d',
+      'VA Form 10-10d — CHAMPVA Application',
+      'online',
+      'https://www.va.gov/family-and-caregiver-benefits/health-and-disability/champva/apply-form-10-10d/introduction',
+      'online',
+      {},
+      true,
+      true,
+    )
+  );
+
+  React.useEffect(() => {
+    loadDraft('va_form_10_10d').then((saved) => {
+      if (saved) {
+        setForm10_10dDraft((current) => ({
+          ...saved,
+          officialUrl: current.officialUrl,
+        }));
+      }
+    });
+  }, []);
+
   const [form21p534ezDraft, setForm21p534ezDraft] = React.useState<FormDraft>(
     makeDefaultDraft(
       'va_form_21p_534ez',
@@ -1016,6 +1040,12 @@ Veterans Education Network video walkthrough: coming soon`;
                 >
                   <Text style={styles.secondaryButtonText}>Send to spouse or child</Text>
                 </TouchableOpacity>
+
+                {/* Form Workspace — 10-10d */}
+                <FormWorkspaceCard
+                  draft={form10_10dDraft}
+                  onDraftChange={setForm10_10dDraft}
+                />
               </View>
             </View>
           )}

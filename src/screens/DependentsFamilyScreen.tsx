@@ -1040,8 +1040,10 @@ Veterans Education Network video walkthrough: coming soon`;
                 >
                   <Text style={styles.secondaryButtonText}>Send to spouse or child</Text>
                 </TouchableOpacity>
+              </View>
 
-                {/* Form Workspace — 10-10d */}
+              {/* Form Workspace — 10-10d */}
+              <View style={styles.card}>
                 <FormWorkspaceCard
                   draft={form10_10dDraft}
                   onDraftChange={setForm10_10dDraft}

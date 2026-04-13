@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Platform,
 } from 'react-native';
+import * as WebBrowser from 'expo-web-browser';
 import { Colors, Spacing, Radius, Font } from '../theme';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -32,6 +33,15 @@ interface FormReviewScreenProps {
 }
 
 // ─── Label formatter ─────────────────────────────────────────────────────────
+
+const VA_FORM_URLS: Record<string, string> = {
+  'va_form_40_10007': 'https://www.va.gov/burials-and-memorials/pre-need/form-10007-apply-for-eligibility/',
+  'va_form_21p_530ez': 'https://www.va.gov/burials-memorials/veterans-burial-allowance/apply-for-allowance-form-21p-530ez/',
+  'va_form_10_0137': 'https://www.va.gov/forms/10-0137/',
+  'va_form_22_5490': 'https://www.va.gov/education/apply-for-education-benefits/application/5490/',
+  'va_form_21p_534ez': 'https://www.va.gov/forms/21p-534ez/',
+  'va_form_10_10d': 'https://www.va.gov/family-and-caregiver-benefits/health-and-disability/champva/apply-form-10-10d/',
+};
 
 function formatLabel(raw: string): string {
   const map: Record<string, string> = {
@@ -153,7 +163,16 @@ export function FormReviewScreen({
 
         {/* ── Action Buttons ── */}
         <View style={styles.actions}>
-          <TouchableOpacity style={styles.primaryBtn} activeOpacity={0.85}>
+          <TouchableOpacity
+            style={styles.primaryBtn}
+            activeOpacity={0.85}
+            onPress={() => {
+              const url = VA_FORM_URLS[formId];
+              if (url) {
+                WebBrowser.openBrowserAsync(url);
+              }
+            }}
+          >
             <Text style={styles.primaryBtnText}>Open VA.gov to complete →</Text>
           </TouchableOpacity>
 

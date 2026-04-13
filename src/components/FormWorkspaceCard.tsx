@@ -26,7 +26,9 @@ export function FormWorkspaceCard({ draft, onDraftChange }: FormWorkspaceCardPro
   const [expanded, setExpanded] = useState(false);
 
   const prefillKeys = Object.keys(draft.prefillData);
-  const fieldDefs = draft.fieldDefinitions ?? [];
+  const fieldDefs = (draft.fieldDefinitions ?? []).filter(
+    (f) => !draft.prefillData[f.key]
+  );
   const hasFields = fieldDefs.length > 0;
 
   const handleFieldChange = async (key: string, value: string) => {

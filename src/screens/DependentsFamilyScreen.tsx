@@ -288,9 +288,16 @@ Veterans Education Network video walkthrough: coming soon`;
       'online',
       'https://www.va.gov/family-and-caregiver-benefits/health-and-disability/champva/apply-form-10-10d/introduction',
       'online',
-      {},
+      profilePrefill,
       true,
       true,
+      [
+        { key: 'full_name', label: 'Full legal name', placeholder: 'First Middle Last', inputType: 'text', required: true },
+        { key: 'date_of_birth', label: 'Date of birth', placeholder: 'MM/DD/YYYY', inputType: 'date', required: true },
+        { key: 'applying_for', label: 'Applying for', placeholder: '', inputType: 'select', options: ['Myself (Veteran)', 'Spouse', 'Child', 'Someone else'], required: true },
+        { key: 'relationship_to_veteran', label: 'Relationship to Veteran', placeholder: 'e.g. Spouse, Child', inputType: 'text', required: true },
+        { key: 'medicare_status', label: 'Does the applicant have Medicare?', placeholder: '', inputType: 'select', options: ['Yes', 'No', 'Not sure'], required: true },
+      ],
     )
   );
 
@@ -300,10 +307,17 @@ Veterans Education Network video walkthrough: coming soon`;
         setForm10_10dDraft((current) => ({
           ...saved,
           officialUrl: current.officialUrl,
+          fieldDefinitions: current.fieldDefinitions,
+          prefillData: { ...profilePrefill, ...saved.prefillData },
+        }));
+      } else {
+        setForm10_10dDraft((current) => ({
+          ...current,
+          prefillData: profilePrefill,
         }));
       }
     });
-  }, []);
+  }, [profilePrefill]);
 
   const [form21p534ezDraft, setForm21p534ezDraft] = React.useState<FormDraft>(
     makeDefaultDraft(
@@ -312,9 +326,17 @@ Veterans Education Network video walkthrough: coming soon`;
       'pdf',
       'https://www.va.gov/forms/21p-534ez/',
       'online',
-      {},
+      profilePrefill,
       true,
       true,
+      [
+        { key: 'full_name', label: 'Full legal name of survivor/claimant', placeholder: 'First Middle Last', inputType: 'text', required: true },
+        { key: 'date_of_birth', label: 'Date of birth', placeholder: 'MM/DD/YYYY', inputType: 'date', required: true },
+        { key: 'claimant_role', label: 'Applying as', placeholder: '', inputType: 'select', options: ['Surviving spouse', 'Surviving child', 'Surviving parent', 'Other'], required: true },
+        { key: 'veteran_full_name', label: 'Veteran full name', placeholder: 'First Middle Last', inputType: 'text', required: true },
+        { key: 'veteran_date_of_death', label: 'Veteran date of death', placeholder: 'MM/DD/YYYY', inputType: 'date', required: true },
+        { key: 'cause_of_death', label: 'Cause of death (brief)', placeholder: 'e.g. Service-connected condition', inputType: 'text', required: false },
+      ],
     )
   );
 
@@ -324,10 +346,17 @@ Veterans Education Network video walkthrough: coming soon`;
         setForm21p534ezDraft((current) => ({
           ...saved,
           officialUrl: current.officialUrl,
+          fieldDefinitions: current.fieldDefinitions,
+          prefillData: { ...profilePrefill, ...saved.prefillData },
+        }));
+      } else {
+        setForm21p534ezDraft((current) => ({
+          ...current,
+          prefillData: profilePrefill,
         }));
       }
     });
-  }, []);
+  }, [profilePrefill]);
 
   const [form22_5490Draft, setForm22_5490Draft] = React.useState<FormDraft>(
     makeDefaultDraft(
@@ -336,9 +365,18 @@ Veterans Education Network video walkthrough: coming soon`;
       'online',
       'https://www.va.gov/family-and-caregiver-benefits/education-and-careers/apply-for-dea-fry-form-22-5490/introduction',
       'online',
-      {},
+      profilePrefill,
       true,
       true,
+      [
+        { key: 'full_name', label: 'Full legal name of applicant', placeholder: 'First Middle Last', inputType: 'text', required: true },
+        { key: 'date_of_birth', label: 'Date of birth', placeholder: 'MM/DD/YYYY', inputType: 'date', required: true },
+        { key: 'applying_as', label: 'Applying as', placeholder: '', inputType: 'select', options: ['Spouse', 'Child', 'Surviving spouse', 'Surviving child'], required: true },
+        { key: 'veteran_full_name', label: 'Veteran full name', placeholder: 'First Middle Last', inputType: 'text', required: true },
+        { key: 'branch_of_service', label: 'Veteran branch of service', placeholder: '', inputType: 'select', options: ['Army', 'Navy', 'Air Force', 'Marine Corps', 'Coast Guard', 'Space Force', 'Army National Guard', 'Air National Guard'], required: true },
+        { key: 'school_name', label: 'School or training program name', placeholder: 'e.g. University of Florida', inputType: 'text', required: true },
+        { key: 'program_of_study', label: 'Program of study', placeholder: 'e.g. Business Administration', inputType: 'text', required: false },
+      ],
     )
   );
 
@@ -348,10 +386,17 @@ Veterans Education Network video walkthrough: coming soon`;
         setForm22_5490Draft((current) => ({
           ...saved,
           officialUrl: current.officialUrl,
+          fieldDefinitions: current.fieldDefinitions,
+          prefillData: { ...profilePrefill, ...saved.prefillData },
+        }));
+      } else {
+        setForm22_5490Draft((current) => ({
+          ...current,
+          prefillData: profilePrefill,
         }));
       }
     });
-  }, []);
+  }, [profilePrefill]);
 
   const [form10_0137Draft, setForm10_0137Draft] = React.useState<FormDraft>(
     makeDefaultDraft(
@@ -360,9 +405,16 @@ Veterans Education Network video walkthrough: coming soon`;
       'pdf',
       'https://www.va.gov/forms/10-0137/',
       'mail',
-      {},
+      profilePrefill,
       true,
       true,
+      [
+        { key: 'full_name', label: 'Full legal name', placeholder: 'First Middle Last', inputType: 'text', required: true },
+        { key: 'date_of_birth', label: 'Date of birth', placeholder: 'MM/DD/YYYY', inputType: 'date', required: true },
+        { key: 'healthcare_agent_name', label: 'Health care agent name', placeholder: 'Person who makes decisions for you', inputType: 'text', required: false, hint: 'This person will make health care decisions if you cannot.' },
+        { key: 'healthcare_agent_phone', label: 'Health care agent phone', placeholder: '(XXX) XXX-XXXX', inputType: 'text', required: false },
+        { key: 'resuscitation_preference', label: 'Resuscitation preference', placeholder: '', inputType: 'select', options: ['Attempt resuscitation', 'Do not attempt resuscitation', 'Discuss with provider'], required: false },
+      ],
     )
   );
 
@@ -372,10 +424,17 @@ Veterans Education Network video walkthrough: coming soon`;
         setForm10_0137Draft((current) => ({
           ...saved,
           officialUrl: current.officialUrl,
+          fieldDefinitions: current.fieldDefinitions,
+          prefillData: { ...profilePrefill, ...saved.prefillData },
+        }));
+      } else {
+        setForm10_0137Draft((current) => ({
+          ...current,
+          prefillData: profilePrefill,
         }));
       }
     });
-  }, []);
+  }, [profilePrefill]);
 
   const [form21p530ezDraft, setForm21p530ezDraft] = React.useState<FormDraft>(
     makeDefaultDraft(
@@ -384,9 +443,19 @@ Veterans Education Network video walkthrough: coming soon`;
       'hybrid',
       'https://www.va.gov/burials-memorials/veterans-burial-allowance/',
       'online',
-      {},
+      profilePrefill,
       true,
       true,
+      [
+        { key: 'full_name', label: 'Full legal name of claimant', placeholder: 'First Middle Last', inputType: 'text', required: true },
+        { key: 'date_of_birth', label: 'Claimant date of birth', placeholder: 'MM/DD/YYYY', inputType: 'date', required: true },
+        { key: 'claimant_role', label: 'Claimant relationship to Veteran', placeholder: '', inputType: 'select', options: ['Surviving spouse', 'Surviving child', 'Parent', 'Person who paid expenses', 'Other'], required: true },
+        { key: 'veteran_full_name', label: 'Veteran full name', placeholder: 'First Middle Last', inputType: 'text', required: true },
+        { key: 'veteran_date_of_death', label: 'Veteran date of death', placeholder: 'MM/DD/YYYY', inputType: 'date', required: true },
+        { key: 'branch_of_service', label: 'Veteran branch of service', placeholder: '', inputType: 'select', options: ['Army', 'Navy', 'Air Force', 'Marine Corps', 'Coast Guard', 'Space Force', 'Army National Guard', 'Air National Guard'], required: true },
+        { key: 'burial_date', label: 'Date of burial', placeholder: 'MM/DD/YYYY', inputType: 'date', required: true },
+        { key: 'burial_location', label: 'Place of burial', placeholder: 'Cemetery name and location', inputType: 'text', required: false },
+      ],
     )
   );
 
@@ -396,10 +465,17 @@ Veterans Education Network video walkthrough: coming soon`;
         setForm21p530ezDraft((current) => ({
           ...saved,
           officialUrl: current.officialUrl,
+          fieldDefinitions: current.fieldDefinitions,
+          prefillData: { ...profilePrefill, ...saved.prefillData },
+        }));
+      } else {
+        setForm21p530ezDraft((current) => ({
+          ...current,
+          prefillData: profilePrefill,
         }));
       }
     });
-  }, []);
+  }, [profilePrefill]);
 
   const [form40_10007Draft, setForm40_10007Draft] = React.useState<FormDraft>(
     makeDefaultDraft(

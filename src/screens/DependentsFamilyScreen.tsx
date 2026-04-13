@@ -11,6 +11,7 @@ import {
   View,
 } from 'react-native';
 import { Colors, Font, Radius, Spacing } from '../theme';
+import { supabase } from '../lib/supabase';
 import { FormWorkspaceCard } from '../components/FormWorkspaceCard';
 import { FormDraft, loadDraft, makeDefaultDraft } from '../lib/formWorkspace';
 
@@ -254,6 +255,31 @@ Veterans Education Network video walkthrough: coming soon`;
       [id]: !current[id],
     }));
   };
+  const [profilePrefill, setProfilePrefill] = React.useState<Record<string, string>>({});
+
+  React.useEffect(() => {
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (!user) return;
+      supabase
+        .from('profiles')
+        .select('full_name, branch, date_of_birth, service_start_date, discharge_character, preferred_cemetery, separation_year')
+        .eq('id', user.id)
+        .single()
+        .then(({ data }) => {
+          if (!data) return;
+          const prefill: Record<string, string> = {};
+          if (data.full_name) prefill['full_name'] = data.full_name;
+          if (data.branch) prefill['branch_of_service'] = data.branch;
+          if (data.date_of_birth) prefill['date_of_birth'] = data.date_of_birth;
+          if (data.service_start_date) prefill['service_date_from'] = data.service_start_date;
+          if (data.discharge_character) prefill['discharge_character'] = data.discharge_character;
+          if (data.preferred_cemetery) prefill['preferred_cemetery'] = data.preferred_cemetery;
+          if (data.separation_year) prefill['service_date_to'] = data.separation_year;
+          setProfilePrefill(prefill);
+        });
+    });
+  }, []);
+
   const [openBurialSections, setOpenBurialSections] = useState<Record<string, boolean>>({});
   const [form10_10dDraft, setForm10_10dDraft] = React.useState<FormDraft>(
     makeDefaultDraft(
@@ -382,7 +408,7 @@ Veterans Education Network video walkthrough: coming soon`;
       'hybrid',
       'https://www.va.gov/burials-memorials/pre-need-eligibility/',
       'mail',
-      {},
+      profilePrefill,
       true,
       true,
       [
@@ -466,10 +492,16 @@ Veterans Education Network video walkthrough: coming soon`;
           ...saved,
           officialUrl: current.officialUrl,
           fieldDefinitions: current.fieldDefinitions,
+          prefillData: { ...profilePrefill, ...saved.prefillData },
+        }));
+      } else {
+        setForm40_10007Draft((current) => ({
+          ...current,
+          prefillData: profilePrefill,
         }));
       }
     });
-  }, []);
+  }, [profilePrefill]);
   const toggleBurialSection = (id: string) => {
     setOpenBurialSections((current) => ({
       ...current,

@@ -21,6 +21,7 @@ import { Colors, Spacing, Radius, Shadow, Font } from '../theme';
 interface UserProfileProps {
   onBack: () => void;
   onSaveComplete?: () => void | Promise<void>;
+  onOpenFeedback?: () => void;
 }
 
 interface VeteranInfo {
@@ -266,7 +267,7 @@ const ClaimStatusPicker: React.FC<{
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 
-export default function UserProfile({ onBack, onSaveComplete }: UserProfileProps) {
+export default function UserProfile({ onBack, onSaveComplete, onOpenFeedback }: UserProfileProps) {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -650,8 +651,8 @@ export default function UserProfile({ onBack, onSaveComplete }: UserProfileProps
           <SettingRow
             icon="📬"
             label="Send feedback"
-            value="tony@myven.us"
-            onPress={() => Alert.alert('Feedback', 'Email feedback to tony@myven.us')}
+            value="Share your experience with us"
+            onPress={() => onOpenFeedback?.()}
           />
         </View>
 

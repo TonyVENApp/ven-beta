@@ -19,6 +19,7 @@ import { EducationApplicationForm } from './src/screens/EducationApplicationForm
 import { StateBenefitsScreen } from './src/screens/StateBenefitsScreen';
 import { VeteranNewsScreen } from './src/screens/VeteranNewsScreen';
 import { FormReviewScreen } from './src/screens/FormReviewScreen';
+import { FeedbackScreen } from './src/screens/FeedbackScreen';
 import { getDashboardMode } from './src/lib/dashboardMode';
 import { supabase } from './src/lib/supabase';
 import { Colors } from './src/theme';
@@ -38,7 +39,8 @@ type MainScreen =
   | 'stateBenefits'
   | 'veteranNews'
   | 'cosponsor'
-  | 'formReview';
+  | 'formReview'
+  | 'feedback';
 
 type AuthScreen = 'login' | 'signup' | 'forgot';
 type EducationBenefit = 'ch33' | 'ch30' | 'vre';
@@ -301,14 +303,27 @@ export default function App() {
     );
   }
 
+  if (screen === 'feedback') {
+    return (
+      <>
+        <StatusBar style="light" />
+        <FeedbackScreen onBack={() => setScreen('dashboard')} />
+      </>
+    );
+  }
+
   if (screen === 'profile') {
     return (
       <>
         <StatusBar style="light" />
-        <UserProfile onBack={() => setScreen('dashboard')} onSaveComplete={async () => {
-          await refreshProfile();
-          setScreen('dashboard');
-        }} />
+        <UserProfile
+          onBack={() => setScreen('dashboard')}
+          onSaveComplete={async () => {
+            await refreshProfile();
+            setScreen('dashboard');
+          }}
+          onOpenFeedback={() => setScreen('feedback')}
+        />
       </>
     );
   }
